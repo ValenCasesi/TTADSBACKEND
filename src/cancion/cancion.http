@@ -1,15 +1,12 @@
 ### GET ALL
-GET https://fiestaappapi.onrender.com/api/djs
+GET https://fiestaappapi.onrender.com/api/
 
 ### POST
-POST https://fiestaappapi.onrender.com/api/djs
+POST http://localhost:3000/api/canciones
 Content-Type: application/json
-
 {
-    "nombre": "juani",
-    "instagram": "pp34",
-    "tel":24,
-    "actual":false
+    "nombre": "lala",
+    "autor": "myke",
 }
 
 
