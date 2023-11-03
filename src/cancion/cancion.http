@@ -1,29 +1,46 @@
 ### GET ALL
-GET https://fiestaappapi.onrender.com/api/
+GET https://fiestaappapi.onrender.com/api/canciones
+
 
 ### POST
-POST http://localhost:3000/api/canciones
+POST https://fiestaappapi.onrender.com/api/canciones
 Content-Type: application/json
+
 {
-    "nombre": "lala",
-    "autor": "myke",
+    "nombre": "fea",
+    "autor": "ozuna",
 }
 
+### POST
+POST http://localhost:3000/api/canciones/
+Content-Type: application/json
+
+{
+  "nombre": "PEPA",
+  "autor":"JUANI"
+}
 
 ### GET ONE
-GET https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
+GET https://fiestaappapi.onrender.com/api/canciones/654542d78f45a8c9b68c6cd7
 
 
 ### PUT
-PUT  https://fiestaappapi.onrender.com/api/djs/654448f8414bbd614739725e
+PUT  https://fiestaappapi.onrender.com/api/canciones/654542d78f45a8c9b68c6cd7
 Content-Type: application/json
 
 {
-    "nombre": "juanii",
-    "instagram": "ii22",
-    "tel":416,
-    "actual":true
+    "nombre": "Myke",
+    "autor": "LALA"
+}
+
+### PUT
+PUT http://localhost:3000/api/canciones/654542d78f45a8c9b68c6cd7
+Content-Type: application/json
+
+{
+    "nombre": "Mykee",
+    "autor": "LALAA"
 }
 
 ### DELETE
-DELETE https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
+DELETE https://fiestaappapi.onrender.com/api/canciones/654542e18f45a8c9b68c6cd8

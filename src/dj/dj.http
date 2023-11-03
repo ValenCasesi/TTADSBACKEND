@@ -1,6 +1,9 @@
 ### GET ALL
 GET https://fiestaappapi.onrender.com/api/djs
 
+### GET ALL
+http://localhost:3000/api/djs
+
 ### POST
 POST https://fiestaappapi.onrender.com/api/djs
 Content-Type: application/json
@@ -18,13 +21,18 @@ GET https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
 
 
 ### PUT
-PUT  https://fiestaappapi.onrender.com/api/djs/654448f8414bbd614739725e
+PUT  https://fiestaappapi.onrender.com/api/djs/654486e3b4a6caa365177ad3
 Content-Type: application/json
 
 {
-    "nombre": "juanii",
-    "instagram": "ii22",
-    "tel":416,
+    "actual":false
+}
+
+### PUT
+PUT http://localhost:3000/api/djs/6545400c3b2ca1bfec740ca8
+Content-Type: application/json
+
+{
     "actual":true
 }
 

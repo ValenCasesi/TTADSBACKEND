@@ -4,16 +4,16 @@ import { Dj } from './dj.entity.js'
 
 const em = orm.em
 
+
 async function findAll(req: Request, res: Response) {
   try {
-    const djs = await em.find(Dj, {})
-    res
-      .status(200)
-      .json({ message: 'found all character classes', data: djs })
+    const djs = await em.find(Dj, {}, { orderBy: { actual: 'DESC' } });
+    res.status(200).json({ message: 'found all djs', data: djs });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
+
 
 async function findOne(req: Request, res: Response) {
   try {
