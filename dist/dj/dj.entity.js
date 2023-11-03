@@ -7,9 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, Property, } from '@mikro-orm/core';
+import { Entity, OneToMany, Property, Cascade, Collection } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
+import { opinionDj } from '../opinionDj/opinionDj.entity.js';
 export let Dj = class Dj extends BaseEntity {
+    constructor() {
+        super(...arguments);
+        this.opinionDjs = new Collection(this);
+    }
 };
 __decorate([
     Property({ nullable: false, unique: true }),
@@ -27,6 +32,12 @@ __decorate([
     Property(),
     __metadata("design:type", Boolean)
 ], Dj.prototype, "actual", void 0);
+__decorate([
+    OneToMany(() => opinionDj, (opinionDj) => opinionDj.Dj, {
+        cascade: [Cascade.ALL],
+    }),
+    __metadata("design:type", Object)
+], Dj.prototype, "opinionDjs", void 0);
 Dj = __decorate([
     Entity()
 ], Dj);

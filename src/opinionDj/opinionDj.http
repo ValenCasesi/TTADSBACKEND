@@ -1,8 +1,8 @@
 ### GET ALL
-GET https://fiestaappapi.onrender.com/api/djs
+GET https://fiestaappapi.onrender.com/api/djs/opiniones
 
 ### GET ALL
-http://localhost:3000/api/djs
+http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
 
 ### POST
 POST https://fiestaappapi.onrender.com/api/djs
@@ -54,18 +54,3 @@ Content-Type: application/json
 
 ### DELETE
 DELETE https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
-
-
-
-### GET ALL
-http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
-
-
-### POST
-POST http://localhost:3000/api/djs/opinion
-Content-Type: application/json
-
-{
-    "opinion": "bueno",
-    "Dj":"654486d2b4a6caa365177ad2"
-}
