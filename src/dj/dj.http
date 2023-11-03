@@ -9,9 +9,9 @@ POST https://fiestaappapi.onrender.com/api/djs
 Content-Type: application/json
 
 {
-    "nombre": "juani",
-    "instagram": "pp34",
-    "tel":24,
+    "nombre": "valen",
+    "instagram": "as",
+    "tel":2457,
     "actual":false
 }
 
@@ -30,6 +30,22 @@ Content-Type: application/json
 
 ### PUT
 PUT http://localhost:3000/api/djs/6545400c3b2ca1bfec740ca8
+Content-Type: application/json
+
+{
+    "actual":true
+}
+
+### PUT
+PUT http://localhost:3000/api/djs/6545400c3b2ca1bfec740ca8
+Content-Type: application/json
+
+{
+    "actual":true
+}
+
+### PUT
+PUT http://localhost:3000/api/djs/actual/65454eb37c19b455a57835e1
 Content-Type: application/json
 
 {

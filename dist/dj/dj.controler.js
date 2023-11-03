@@ -46,6 +46,29 @@ async function update(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function updateActual(req, res) {
+    try {
+        const id = req.params.id;
+        const dj = await em.findOne(Dj, id);
+        if (!dj) {
+            return res.status(404).json({ message: 'Dj not found' });
+        }
+        const allDjs = await em.find(Dj, {});
+        allDjs.forEach(async (item) => {
+            if (item.id === id) {
+                item.actual = true;
+            }
+            else {
+                item.actual = false;
+            }
+            await em.persistAndFlush(item);
+        });
+        res.status(200).json({ message: 'dj updated' });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 async function remove(req, res) {
     try {
         const id = req.params.id;
@@ -57,5 +80,5 @@ async function remove(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
-export { findAll, findOne, add, update, remove };
+export { findAll, findOne, add, update, updateActual, remove };
 //# sourceMappingURL=dj.controler.js.map
