@@ -1,0 +1,32 @@
+### GET ALL
+GET http://localhost:3000/api/djs
+
+### POST
+POST http://localhost:3000/api/djs
+Content-Type: application/json
+
+{
+    "nombre": "mecaaa",
+    "instagram": "mmmmm",
+    "tel":2214445744,
+    "actual":true
+}
+
+
+### GET ONE
+GET http://localhost:3000/api/djs/654443d6ac72c35a43ed17da
+
+
+### PUT
+PUT  http://localhost:3000/api/djs/654443d6ac72c35a43ed17da
+Content-Type: application/json
+
+{
+    "nombre": "mecaaaa",
+    "instagram": "meme",
+    "tel":416,
+    "actual":true
+}
+
+### DELETE
+DELETE http://localhost:3000/api/djs/65444565ac72c35a43ed17db
