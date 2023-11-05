@@ -9,10 +9,10 @@ POST https://fiestaappapi.onrender.com/api/djs
 Content-Type: application/json
 
 {
-    "nombre": "valen",
-    "instagram": "as",
-    "tel":2457,
-    "actual":false
+    "nombre": "jorge",
+    "instagram": "ppe",
+    "tel":24457,
+    "actual":true
 }
 
 
@@ -53,12 +53,12 @@ Content-Type: application/json
 }
 
 ### DELETE
-DELETE https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
+DELETE https://fiestaappapi.onrender.com/api/djs/65469103185c3f0963fb7c6d
 
 
 
 ### GET ALL
-http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
+http://localhost:3000/api/djs/opiniones
 
 
 ### POST
@@ -66,6 +66,12 @@ POST http://localhost:3000/api/djs/opinion
 Content-Type: application/json
 
 {
-    "opinion": "bueno",
-    "Dj":"654486d2b4a6caa365177ad2"
+    "opinion": "Buenisimo"
 }
+
+### GET ONE
+GET http://localhost:3000/api/djs/65458887db3542c3e0703d34/opinion
+// 654486d2b4a6caa365177ad2
+
+### GET ONE
+GET http://localhost:3000/api/djs/valennn/as/opiniones
