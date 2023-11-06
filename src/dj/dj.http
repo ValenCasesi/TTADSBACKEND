@@ -74,4 +74,4 @@ GET http://localhost:3000/api/djs/65458887db3542c3e0703d34/opinion
 // 654486d2b4a6caa365177ad2
 
 ### GET ONE
-GET http://localhost:3000/api/djs/valennn/as/opiniones
+GET http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
