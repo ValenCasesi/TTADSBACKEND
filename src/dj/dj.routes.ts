@@ -11,10 +11,10 @@ import {opinionMethods} from '../opinionDj/opinionDj.controler.js'
 export const djRouter = Router()
 
 djRouter.get('/', findAll)
+djRouter.get('/:id/opiniones',opinionMethods.findOpinionByDj)
 djRouter.get('/opiniones',opinionMethods.findAll)
 djRouter.get('/:id/opinion',opinionMethods.findOne)
 djRouter.post('/opinion',opinionMethods.add)
-djRouter.get('/:nombre/:instagram/opiniones',opinionMethods.findOpinionByDj)
 djRouter.get('/:id', findOne)
 djRouter.post('/', add)
 djRouter.put('/:id', update)
