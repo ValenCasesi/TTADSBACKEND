@@ -27,8 +27,8 @@ async function findOne(req, res) {
 }
 async function findOpinionByDj(req, res) {
     try {
-        const { nombre, instagram } = req.params;
-        const dj = await em.findOne(Dj, { nombre, instagram });
+        const id = req.params.id;
+        const dj = await em.findOne(Dj, { id });
         if (!dj) {
             return res.status(404).json({ message: 'Dj not found' });
         }

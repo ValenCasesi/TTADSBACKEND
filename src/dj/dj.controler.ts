@@ -14,7 +14,6 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
-
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id
