@@ -27,17 +27,57 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+// async function add(req: Request, res: Response) {
+//   try {
+//     const {nombre,autor} = req.body
+//     const cancionExistente = await em.findOne(Cancion, { nombre,autor })
+//     if (cancionExistente) {
+//       return res.status(409).json({message:'Cancion existente', data: cancionExistente}) 
+//     }
+//     const cancionNueva = em.create(Cancion, req.body);
+//     await em.flush();
+//     return res.status(201).json({ message: 'Cancion creada', data: cancionNueva });
+    
+//   } catch (error: any) {
+//     return res.status(500).json({ message: error.message })
+//   }
+// }
+
 async function add(req: Request, res: Response) {
   try {
-    const cancion = em.create(Cancion, req.body)
-    await em.flush()
-    res
-      .status(201)
-      .json({ message: 'Cancion created', data: cancion })
+    const { nombre, autor } = req.body;
+    const cancionExistente = await em.findOne(Cancion, { nombre, autor });
+
+    if (cancionExistente) {
+      res.status(409).json({ message: 'Cancion existente', data: cancionExistente });
+      return cancionExistente;
+    } else {
+      const cancionNueva = em.create(Cancion, req.body);
+      await em.flush();
+      res.status(201).json({ message: 'Cancion creada', data: cancionNueva });
+      return cancionNueva;
+    }
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
+async function addSinRes(req: Request, res: Response) {
+  try {
+    const { nombre, autor } = req.body;
+    const cancionExistente = await em.findOne(Cancion, { nombre, autor });
+
+    if (cancionExistente) {
+      return cancionExistente;
+    } else {
+      const cancionNueva = em.create(Cancion, req.body);
+      await em.flush();
+      return cancionNueva;
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
 async function update(req: Request, res: Response) {
   try {
@@ -62,4 +102,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove }
+export const cancionMethods = { findAll, findOne, add, addSinRes, update, remove }

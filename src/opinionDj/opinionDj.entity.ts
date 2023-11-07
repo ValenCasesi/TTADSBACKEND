@@ -11,10 +11,10 @@ import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {Dj} from '../dj/dj.entity.js'
 
 @Entity()
-export class opinionDj extends BaseEntity {
+export class OpinionDj extends BaseEntity {
     @Property({ nullable: false})
     opinion!: string
     
     @ManyToOne(() => Dj, { nullable: false })
-    Dj!: Rel<Dj>
+    dj!: Rel<Dj>
 }

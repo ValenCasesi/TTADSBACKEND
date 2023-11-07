@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import express from 'express'
 import { djRouter } from './dj/dj.routes.js'
 import { cancionRouter } from './cancion/cancion.routes.js'
+import { cancionDjRouter } from './cancionDj/cancionDj.routes.js'
 import { orm } from './shared/db/orm.js'
 import { RequestContext } from '@mikro-orm/core'
 import cors from 'cors'
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 
 app.use('/api/djs', djRouter)
 app.use('/api/canciones', cancionRouter)
+app.use('/api/canciondj', cancionDjRouter)
 
 app.use((_, res) => {
   return res.status(404).send({ message: 'Resource not found' })

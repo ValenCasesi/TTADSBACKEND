@@ -1,10 +1,10 @@
 import { orm } from '../shared/db/orm.js';
-import { opinionDj } from './opinionDj.entity.js';
+import { OpinionDj } from './opinionDj.entity.js';
 import { Dj } from '../dj/dj.entity.js';
 const em = orm.em;
 async function findAll(req, res) {
     try {
-        const opinionDjs = await em.find(opinionDj, {});
+        const opinionDjs = await em.find(OpinionDj, {});
         res
             .status(200)
             .json({ message: 'found all opinionDjs', data: opinionDjs });
@@ -16,7 +16,7 @@ async function findAll(req, res) {
 async function findOne(req, res) {
     try {
         const id = req.params.id;
-        const opiniondj = await em.findOneOrFail(opinionDj, { id });
+        const opiniondj = await em.findOneOrFail(OpinionDj, { id });
         res
             .status(200)
             .json({ message: 'found OpinionDj', data: opiniondj });
@@ -32,7 +32,7 @@ async function findOpinionByDj(req, res) {
         if (!dj) {
             return res.status(404).json({ message: 'Dj not found' });
         }
-        const opiniondjs = await em.find(opinionDj, { Dj: dj });
+        const opiniondjs = await em.find(OpinionDj, { dj: dj });
         res.status(200).json({ message: 'found OpinionDjs', data: opiniondjs });
     }
     catch (error) {
@@ -45,8 +45,8 @@ async function add(req, res) {
         if (!actualDj) {
             return res.status(404).json({ message: 'No DJ with actual=true found' });
         }
-        const opiniondj = em.create(opinionDj, req.body);
-        opiniondj.Dj = actualDj;
+        const opiniondj = em.create(OpinionDj, req.body);
+        opiniondj.dj = actualDj;
         await em.flush();
         res.status(201).json({ message: 'OpinionDj created', data: opiniondj });
     }
@@ -57,7 +57,7 @@ async function add(req, res) {
 async function update(req, res) {
     try {
         const id = req.params.id;
-        const opiniondj = em.getReference(opinionDj, id);
+        const opiniondj = em.getReference(OpinionDj, id);
         em.assign(opiniondj, req.body);
         await em.flush();
         res.status(200).json({ message: 'OpinionDj updated' });
@@ -69,7 +69,7 @@ async function update(req, res) {
 async function remove(req, res) {
     try {
         const id = req.params.id;
-        const opiniondj = em.getReference(opinionDj, id);
+        const opiniondj = em.getReference(OpinionDj, id);
         await em.removeAndFlush(opiniondj);
         res.status(200).send({ message: 'OpinionDj deleted' });
     }

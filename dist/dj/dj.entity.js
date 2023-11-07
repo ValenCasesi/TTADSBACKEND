@@ -9,11 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Entity, OneToMany, Property, Cascade, Collection } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
-import { opinionDj } from '../opinionDj/opinionDj.entity.js';
+import { OpinionDj } from '../opinionDj/opinionDj.entity.js';
+import { CancionDj } from '../cancionDj/cancionDj.entity.js';
 export let Dj = class Dj extends BaseEntity {
     constructor() {
         super(...arguments);
         this.opinionDjs = new Collection(this);
+        this.cancionDj = new Collection(this);
     }
 };
 __decorate([
@@ -33,11 +35,21 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Dj.prototype, "actual", void 0);
 __decorate([
-    OneToMany(() => opinionDj, (opinionDj) => opinionDj.Dj, {
+    Property(),
+    __metadata("design:type", Date)
+], Dj.prototype, "fechaActual", void 0);
+__decorate([
+    OneToMany(() => OpinionDj, (opinionDj) => opinionDj.dj, {
         cascade: [Cascade.ALL],
     }),
     __metadata("design:type", Object)
 ], Dj.prototype, "opinionDjs", void 0);
+__decorate([
+    OneToMany(() => CancionDj, (cancionDj) => cancionDj.dj, {
+        cascade: [Cascade.ALL],
+    }),
+    __metadata("design:type", Object)
+], Dj.prototype, "cancionDj", void 0);
 Dj = __decorate([
     Entity()
 ], Dj);

@@ -8,7 +8,9 @@ import {
     Rel
 } from '@mikro-orm/core'
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
-import {opinionDj} from '../opinionDj/opinionDj.entity.js'
+import {OpinionDj} from '../opinionDj/opinionDj.entity.js'
+import {CancionDj} from '../cancionDj/cancionDj.entity.js'
+
 @Entity()
 export class Dj extends BaseEntity {
     @Property({ nullable: false, unique: true })
@@ -22,10 +24,18 @@ export class Dj extends BaseEntity {
 
     @Property()
     actual!: boolean
+    
+    @Property()
+    fechaActual!: Date
 
-    @OneToMany(() => opinionDj, (opinionDj) => opinionDj.Dj, {
+    @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.dj, {
         cascade: [Cascade.ALL],
       })
-      opinionDjs = new Collection<opinionDj>(this)
+      opinionDjs = new Collection<OpinionDj>(this)
+
+    @OneToMany(() => CancionDj, (cancionDj) => cancionDj.dj, {
+        cascade: [Cascade.ALL],
+      })
+      cancionDj = new Collection<CancionDj>(this)
 
 }

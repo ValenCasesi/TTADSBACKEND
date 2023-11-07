@@ -25,6 +25,28 @@ async function findOne(req: Request, res: Response) {
     res.status(500).json({ message: error.message })
   }
 }
+// async function findOneActual(res: Response) {
+//   try {
+//     const dj = await em.findOneOrFail(Dj, { actual:true })
+//     res.status(200).json({ message: 'DjActual encontrado', data: dj })
+//     return dj;
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
+
+async function findOneActual(res: Response) {
+  try {
+    const actualDj = await em.findOneOrFail(Dj, { actual: true });
+    if (!actualDj) {
+      res.status(404).json({ message: 'No se econtro dj actual' });
+    }
+    res.status(201).json({ message: 'Dj actual encontrado', data: actualDj });
+    return actualDj;
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 async function add(req: Request, res: Response) {
   try {
@@ -84,4 +106,12 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, updateActual, remove }
+export const djMethods = {
+  findAll,
+  findOne,
+  findOneActual,
+  add,
+  update,
+  updateActual,
+  remove,
+};

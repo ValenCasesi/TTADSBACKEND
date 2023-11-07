@@ -10,17 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Entity, Property, ManyToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
 import { Dj } from '../dj/dj.entity.js';
-export let opinionDj = class opinionDj extends BaseEntity {
+export let OpinionDj = class OpinionDj extends BaseEntity {
 };
 __decorate([
     Property({ nullable: false }),
     __metadata("design:type", String)
-], opinionDj.prototype, "opinion", void 0);
+], OpinionDj.prototype, "opinion", void 0);
 __decorate([
     ManyToOne(() => Dj, { nullable: false }),
     __metadata("design:type", Object)
-], opinionDj.prototype, "Dj", void 0);
-opinionDj = __decorate([
+], OpinionDj.prototype, "dj", void 0);
+OpinionDj = __decorate([
     Entity()
-], opinionDj);
+], OpinionDj);
 //# sourceMappingURL=opinionDj.entity.js.map

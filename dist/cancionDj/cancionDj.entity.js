@@ -7,30 +7,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, OneToMany, Property, Cascade, Collection, } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
-import { CancionDj } from '../cancionDj/cancionDj.entity.js';
-export let Cancion = class Cancion extends BaseEntity {
+import { Dj } from '../dj/dj.entity.js';
+import { Cancion } from '../cancion/cancion.entity.js';
+export let CancionDj = class CancionDj extends BaseEntity {
     constructor() {
         super(...arguments);
-        this.cancionDj = new Collection(this);
+        this.fechaActual = new Date();
     }
 };
 __decorate([
-    Property({ nullable: false, unique: true }),
-    __metadata("design:type", String)
-], Cancion.prototype, "nombre", void 0);
+    Property({ nullable: false, type: Date }),
+    __metadata("design:type", Date)
+], CancionDj.prototype, "fechaActual", void 0);
 __decorate([
-    Property({ nullable: false, unique: true }),
-    __metadata("design:type", String)
-], Cancion.prototype, "autor", void 0);
+    Property({ nullable: true }),
+    __metadata("design:type", Boolean)
+], CancionDj.prototype, "actual", void 0);
 __decorate([
-    OneToMany(() => CancionDj, (cancionDj) => cancionDj.cancion, {
-        cascade: [Cascade.ALL],
-    }),
+    Property({ nullable: true }),
+    __metadata("design:type", Number)
+], CancionDj.prototype, "puntaje", void 0);
+__decorate([
+    ManyToOne(() => Cancion, { nullable: false }),
     __metadata("design:type", Object)
-], Cancion.prototype, "cancionDj", void 0);
-Cancion = __decorate([
+], CancionDj.prototype, "cancion", void 0);
+__decorate([
+    ManyToOne(() => Dj, { nullable: false }),
+    __metadata("design:type", Object)
+], CancionDj.prototype, "dj", void 0);
+CancionDj = __decorate([
     Entity()
-], Cancion);
-//# sourceMappingURL=cancion.entity.js.map
+], CancionDj);
+//# sourceMappingURL=cancionDj.entity.js.map

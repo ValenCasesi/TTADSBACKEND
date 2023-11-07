@@ -1,6 +1,8 @@
 ### GET ALL
 GET https://fiestaappapi.onrender.com/api/canciones
 
+### GET ALL
+GET http://localhost:3000/api/canciones/
 
 ### POST
 POST https://fiestaappapi.onrender.com/api/canciones
@@ -16,8 +18,8 @@ POST http://localhost:3000/api/canciones/
 Content-Type: application/json
 
 {
-  "nombre": "PEPA",
-  "autor":"JUANI"
+  "nombre": "fea",
+  "autor":"ozuna"
 }
 
 ### GET ONE

@@ -22,6 +22,28 @@ async function findOne(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+// async function findOneActual(res: Response) {
+//   try {
+//     const dj = await em.findOneOrFail(Dj, { actual:true })
+//     res.status(200).json({ message: 'DjActual encontrado', data: dj })
+//     return dj;
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
+async function findOneActual(res) {
+    try {
+        const actualDj = await em.findOneOrFail(Dj, { actual: true });
+        if (!actualDj) {
+            res.status(404).json({ message: 'No se econtro dj actual' });
+        }
+        res.status(201).json({ message: 'Dj actual encontrado', data: actualDj });
+        return actualDj;
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 async function add(req, res) {
     try {
         const dj = em.create(Dj, req.body);
@@ -80,5 +102,13 @@ async function remove(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
-export { findAll, findOne, add, update, updateActual, remove };
+export const djMethods = {
+    findAll,
+    findOne,
+    findOneActual,
+    add,
+    update,
+    updateActual,
+    remove,
+};
 //# sourceMappingURL=dj.controler.js.map
