@@ -5,16 +5,15 @@ GET https://fiestaappapi.onrender.com/api/djs
 http://localhost:3000/api/djs
 
 ### POST
-POST https://fiestaappapi.onrender.com/api/djs
+POST http://localhost:3000/api/djs
 Content-Type: application/json
 
 {
-    "nombre": "jorge",
-    "instagram": "ppe",
-    "tel":24457,
-    "actual":true
+    "nombre": "Valen DJ",
+    "instagram": "vdj",
+    "tel":6143,
+    "actual":false
 }
-
 
 ### GET ONE
 GET https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
@@ -66,7 +65,7 @@ POST http://localhost:3000/api/djs/opinion
 Content-Type: application/json
 
 {
-    "opinion": "Buenisimo"
+    "opinion": "Es muy bueno"
 }
 
 ### GET ONE

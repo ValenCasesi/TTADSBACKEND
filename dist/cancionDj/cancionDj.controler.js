@@ -9,7 +9,6 @@ async function findOneByDjCancion(cancion, dj, res) {
         if (cancionDj) {
             return res.status(200).json({ message: 'cancionDj ya existente', data: cancionDj });
         }
-        res.status(204).json({ message: 'cancionDj no existente' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -41,19 +40,17 @@ async function add(req, res) {
             if (!actualDj) {
                 return res.status(404).json({ message: 'No hay un Dj Actual' });
             }
-            // const cancionDjExistente = await findOneByDjCancion(cancionExistente, actualDj, res );
-            // if (!cancionDjExistente) {
-            //     const cancionDj = new CancionDj();
-            //     cancionDj.dj= actualDj;
-            //     cancionDj.cancion = cancionExistente;
-            //     cancionDj.actual = true;
-            //     cancionDj.fechaActual = actualDj.fechaActual;
-            //     cancionDj.puntaje = 0;
-            //     await em.persistAndFlush(cancionDj);
-            //     res.status(201).json({ message: 'CancionDj agregada a las que sonaran', data: cancionDj });
-            // } else {
-            //     res.status(200).json({ message: 'CancionDj already exists', data: cancionDjExistente });
-            // }
+            const cancionDjExistente = await findOneByDjCancion(cancionExistente, actualDj, res);
+            if (!cancionDjExistente) {
+                const cancionDj = new CancionDj();
+                cancionDj.dj = actualDj;
+                cancionDj.cancion = cancionExistente;
+                cancionDj.actual = true;
+                cancionDj.fechaActual = actualDj.fechaActual;
+                cancionDj.puntaje = 0;
+                await em.persistAndFlush(cancionDj);
+                return res.status(201).json({ message: 'CancionDj agregada a las que sonaran', data: cancionDj });
+            }
         }
     }
     catch (error) {

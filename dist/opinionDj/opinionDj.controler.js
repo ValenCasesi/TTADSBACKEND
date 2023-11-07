@@ -30,10 +30,10 @@ async function findOpinionByDj(req, res) {
         const id = req.params.id;
         const djEncontrado = await em.findOne(Dj, { id });
         if (!djEncontrado) {
-            return res.status(404).json({ message: "Dj not found" });
+            return res.status(404).json({ message: "Dj no encontrado" });
         }
         const opiniondjs = await em.find(OpinionDj, { dj: djEncontrado });
-        res.status(200).json({ message: 'found OpinionDjs', data: opiniondjs });
+        res.status(200).json({ message: 'OpinionDjs encontrada', data: opiniondjs });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -43,12 +43,12 @@ async function add(req, res) {
     try {
         const actualDj = await em.findOne(Dj, { actual: true });
         if (!actualDj) {
-            return res.status(404).json({ message: 'No DJ with actual=true found' });
+            return res.status(404).json({ message: 'No se encontro un DJ con actual=true' });
         }
         const opiniondj = em.create(OpinionDj, req.body);
         opiniondj.dj = actualDj;
         await em.flush();
-        res.status(201).json({ message: 'OpinionDj created', data: opiniondj });
+        res.status(201).json({ message: 'OpinionDj creada', data: opiniondj });
     }
     catch (error) {
         res.status(500).json({ message: error.message });

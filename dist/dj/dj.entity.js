@@ -14,6 +14,7 @@ import { CancionDj } from '../cancionDj/cancionDj.entity.js';
 export let Dj = class Dj extends BaseEntity {
     constructor() {
         super(...arguments);
+        this.fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         this.opinionDjs = new Collection(this);
         this.cancionDj = new Collection(this);
     }
@@ -35,7 +36,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Dj.prototype, "actual", void 0);
 __decorate([
-    Property(),
+    Property({ type: Date, nullable: false }),
     __metadata("design:type", Date)
 ], Dj.prototype, "fechaActual", void 0);
 __decorate([

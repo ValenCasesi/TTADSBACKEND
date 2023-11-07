@@ -20,7 +20,7 @@ async function findOne(req: Request, res: Response) {
     const dj = await em.findOneOrFail(Dj, { id })
     res
       .status(200)
-      .json({ message: 'found character class', data: dj })
+      .json({ message: 'DJ encontrado', data: dj })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -41,24 +41,36 @@ async function findOneActual(res: Response) {
     if (!actualDj) {
       res.status(404).json({ message: 'No se econtro dj actual' });
     }
-    res.status(201).json({ message: 'Dj actual encontrado', data: actualDj });
     return actualDj;
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
+// async function add(req: Request, res: Response) {
+//   try {
+//     const dj = em.create(Dj, req.body)
+//     const fechaActual = new Date();
+//     const fechaSinHora: Date = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+//     dj.fechaActual = fechaSinHora;
+//     console.log(dj.fechaActual);
+//     await em.flush()
+//     res.status(201).json({ message: 'DJ creado', data: dj })
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
+
 async function add(req: Request, res: Response) {
   try {
-    const dj = em.create(Dj, req.body)
+    const newDj = em.create(Dj, req.body);
     await em.flush()
-    res
-      .status(201)
-      .json({ message: 'character class created', data: dj })
+    res.status(201).json({ message: 'DJ created', data: newDj });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
+
 
 async function update(req: Request, res: Response) {
   try {
@@ -66,7 +78,7 @@ async function update(req: Request, res: Response) {
     const dj = em.getReference(Dj, id)
     em.assign(dj, req.body)
     await em.flush()
-    res.status(200).json({ message: 'character class updated' })
+    res.status(200).json({ message: 'Dj updated' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -100,7 +112,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id
     const dj = em.getReference(Dj, id)
     await em.removeAndFlush(dj)
-    res.status(200).send({ message: 'character class deleted' })
+    res.status(200).send({ message: 'DJ deleted' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
