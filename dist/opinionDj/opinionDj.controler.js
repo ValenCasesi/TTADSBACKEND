@@ -28,11 +28,11 @@ async function findOne(req, res) {
 async function findOpinionByDj(req, res) {
     try {
         const id = req.params.id;
-        const dj = await em.findOne(Dj, { id });
-        if (!dj) {
-            return res.status(404).json({ message: 'Dj not found' });
+        const djEncontrado = await em.findOne(Dj, { id });
+        if (!djEncontrado) {
+            return res.status(404).json({ message: "Dj not found" });
         }
-        const opiniondjs = await em.find(OpinionDj, { dj: dj });
+        const opiniondjs = await em.find(OpinionDj, { dj: djEncontrado });
         res.status(200).json({ message: 'found OpinionDjs', data: opiniondjs });
     }
     catch (error) {
