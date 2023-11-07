@@ -57,7 +57,23 @@ async function add(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function topCancionesFecha(fechaTop) {
+    const cancionesDj = await em.find(CancionDj, { fechaActual: fechaTop }, { orderBy: { puntaje: 'DESC' } });
+    return cancionesDj;
+}
+async function findAll(req, res) {
+    try {
+        const cancionDjs = await em.find(CancionDj, {});
+        res
+            .status(200)
+            .json({ message: 'found all CancionDj', data: cancionDjs });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 export const canciondjMethods = {
-    add
+    add,
+    findAll
 };
 //# sourceMappingURL=cancionDj.controler.js.map

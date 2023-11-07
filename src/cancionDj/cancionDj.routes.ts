@@ -3,4 +3,5 @@ import { canciondjMethods } from "./cancionDj.controler.js";
 
 export const cancionDjRouter = Router();
 
-cancionDjRouter.post("/add", canciondjMethods.add);
+cancionDjRouter.get("/", canciondjMethods.findAll);
+cancionDjRouter.post("/", canciondjMethods.add);
