@@ -72,9 +72,27 @@ async function findAllVotacion(req: Request, res: Response) {
   }
 }
 
+async function update(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const cancionDj = await em.findOne(CancionDj, { id });
+    
+    if (!cancionDj) {
+      return res.status(404).json({ message: 'CancionDj not found' });
+    }
+
+    cancionDj.puntaje += 1
+    await em.flush();
+    res.status(200).json({ message: 'CancionDj updated' });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
 export const canciondjMethods = {
   add,
   findAll,
-  findAllVotacion
+  findAllVotacion,
+  update
 };

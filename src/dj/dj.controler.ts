@@ -71,7 +71,6 @@ async function add(req: Request, res: Response) {
   }
 }
 
-
 async function update(req: Request, res: Response) {
   try {
     const id = req.params.id
