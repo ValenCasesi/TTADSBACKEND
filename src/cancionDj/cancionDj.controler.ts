@@ -65,14 +65,13 @@ async function findAll(req: Request, res: Response) {
 
 async function findAllVotacion(req: Request, res: Response) {
   try {
-    const cancionDjs = await em.find(CancionDj, {actual:true})
-    res
-      .status(200)
-      .json({ message: 'found all CancionDj actuales', data: cancionDjs })
+    const cancionDjs = await em.find(CancionDj, { actual: true }, { populate: ['cancion'] });
+    res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
+
 
 export const canciondjMethods = {
   add,
