@@ -78,10 +78,34 @@ async function update(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+// async function findAllTopCanciones(req: Request, res: Response) {
+//   try {
+//     const fechaElegida = req.params
+//     const cancionDjs = await em.find(CancionDj, { actual: true , fechaActual: fechaElegida}, { populate: ['cancion'] });
+//     res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
+// async function formatDate(req: Request, res: Response){
+//   const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
+//   findAllTopCanciones(fechaElegida,x:response)
+// }
+async function findAllTopCanciones(req, res) {
+    try {
+        const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
+        const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: new Date(fechaElegida) } }, { populate: ['cancion'] });
+        res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 export const canciondjMethods = {
     add,
     findAll,
     findAllVotacion,
-    update
+    update,
+    findAllTopCanciones
 };
 //# sourceMappingURL=cancionDj.controler.js.map

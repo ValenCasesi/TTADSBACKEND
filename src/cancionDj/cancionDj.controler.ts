@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { t } from '@mikro-orm/core'
 import { Dj } from '../dj/dj.entity.js'
@@ -89,10 +89,36 @@ async function update(req: Request, res: Response) {
   }
 }
 
+// async function findAllTopCanciones(req: Request, res: Response) {
+//   try {
+//     const fechaElegida = req.params
+//     const cancionDjs = await em.find(CancionDj, { actual: true , fechaActual: fechaElegida}, { populate: ['cancion'] });
+//     res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// }
+
+// async function formatDate(req: Request, res: Response){
+//   const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
+//   findAllTopCanciones(fechaElegida,x:response)
+// }
+
+async function findAllTopCanciones(req: Request,res:Response) {
+  try {
+    const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
+    const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: new Date(fechaElegida) } }, { populate: ['cancion'] });
+    res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
 export const canciondjMethods = {
   add,
   findAll,
   findAllVotacion,
-  update
+  update,
+  findAllTopCanciones
 };

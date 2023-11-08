@@ -7,3 +7,4 @@ cancionDjRouter.put("/:id/votacion", canciondjMethods.update);
 cancionDjRouter.get("/votacion", canciondjMethods.findAllVotacion);
 cancionDjRouter.get("/", canciondjMethods.findAll);
 cancionDjRouter.post("/", canciondjMethods.add);
+cancionDjRouter.get("/topcanciones/:fechaElegida", canciondjMethods.findAllTopCanciones);
