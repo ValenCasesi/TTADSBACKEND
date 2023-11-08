@@ -11,7 +11,7 @@ const em = orm.em
 
 async function findOneByDjCancion(cancion:Cancion | undefined , dj:Dj , res: Response) {
     try {
-      const cancionDj = await em.findOne(CancionDj, { cancion , dj })
+      const cancionDj = await em.findOne(CancionDj, { cancion , dj , actual:true})
       if(cancionDj){
         return res.status(200).json({ message: 'cancionDj ya existente', data: cancionDj })
       }
@@ -19,29 +19,6 @@ async function findOneByDjCancion(cancion:Cancion | undefined , dj:Dj , res: Res
       res.status(500).json({ message: error.message })
     }
 }
-
-// async function add(req: Request, res: Response) {
-//     try {
-//     const cancionExistente = await cancionMethods.add( req , res);
-//     console.log(cancionExistente)
-//     if(res.statusCode !== 500){
-
-//         const actualDj = await em.findOne(Dj, { actual: true });
-//         if (!actualDj) {
-//             return res.status(404).json({ message: 'No hay un Dj Actual' });
-//         }
-        
-//         const cancionDjExistente = findOneByIDs(cancionExistente.id , actualDj.id, res)
-//         //seguir codigo
-//         //const cancionDj = em.create(cancionDj, req.body);
-//         await em.flush();
-  
-       
-//     }
-//     } catch (error: any) {
-//       res.status(500).json({ message: error.message });
-//     }
-// }
 
 async function add(req: Request, res: Response) {
   try {
@@ -86,7 +63,19 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
+async function findAllVotacion(req: Request, res: Response) {
+  try {
+    const cancionDjs = await em.find(CancionDj, {actual:true})
+    res
+      .status(200)
+      .json({ message: 'found all CancionDj actuales', data: cancionDjs })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 export const canciondjMethods = {
   add,
-  findAll
+  findAll,
+  findAllVotacion
 };
