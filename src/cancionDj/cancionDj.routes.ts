@@ -8,3 +8,4 @@ cancionDjRouter.get("/votacion", canciondjMethods.findAllVotacion);
 cancionDjRouter.get("/", canciondjMethods.findAll);
 cancionDjRouter.post("/", canciondjMethods.add);
 cancionDjRouter.get("/topcanciones/:fechaElegida", canciondjMethods.findAllTopCanciones);
+cancionDjRouter.delete("/", canciondjMethods.deleteAll);

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, Property, Cascade, ManyToOne } from '@mikro-orm/core';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
 import { Dj } from '../dj/dj.entity.js';
 import { Cancion } from '../cancion/cancion.entity.js';
@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CancionDj.prototype, "puntaje", void 0);
 __decorate([
-    ManyToOne(() => Cancion, { nullable: false, cascade: [Cascade.ALL] }),
+    ManyToOne(() => Cancion, { nullable: false }),
     __metadata("design:type", Object)
 ], CancionDj.prototype, "cancion", void 0);
 __decorate([

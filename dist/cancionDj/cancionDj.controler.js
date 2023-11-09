@@ -101,11 +101,25 @@ async function findAllTopCanciones(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function deleteAll(req, res) {
+    try {
+        // const id = req.params.id;
+        // await em.nativeDelete(CancionDj, { id: id });
+        // res.status(200).send({ message: 'All matching entries deleted' });
+        const cancionDjs = await em.find(CancionDj, {});
+        cancionDjs.forEach(async (cancionDj) => { await em.removeAndFlush(cancionDj); });
+        res.status(200).send({ message: 'All matching entries deleted' });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 export const canciondjMethods = {
     add,
     findAll,
     findAllVotacion,
     update,
-    findAllTopCanciones
+    findAllTopCanciones,
+    deleteAll
 };
 //# sourceMappingURL=cancionDj.controler.js.map
