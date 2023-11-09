@@ -22,7 +22,7 @@ export class CancionDj extends BaseEntity {
     @Property({nullable: true})
     puntaje!: number
 
-    @ManyToOne(() => Cancion , { nullable: false })
+    @ManyToOne(() => Cancion , { nullable: false , cascade: [Cascade.ALL]})
     cancion!: Rel<Cancion | undefined>
     
     @ManyToOne(() => Dj, { nullable: false })
