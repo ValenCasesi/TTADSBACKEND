@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CancionDj.prototype, "puntaje", void 0);
 __decorate([
-    ManyToOne(() => Cancion, { nullable: false }),
+    ManyToOne(() => Cancion, { nullable: false, onDelete: 'CASCADE' }),
     __metadata("design:type", Object)
 ], CancionDj.prototype, "cancion", void 0);
 __decorate([
