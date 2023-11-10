@@ -11,6 +11,7 @@ djRouter.get('/opiniones',opinionMethods.findAll)
 djRouter.get('/:id/opinion',opinionMethods.findOne)
 djRouter.post('/opinion',opinionMethods.add)
 djRouter.delete('/:id',opinionMethods.remove)
+djRouter.get("/fechanueva", djMethods.updateDjFechaActual);
 djRouter.get("/:id", djMethods.findOne);
 djRouter.post('/', djMethods.add)
 djRouter.put("/:id", djMethods.update);

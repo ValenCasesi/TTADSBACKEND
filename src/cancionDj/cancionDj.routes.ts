@@ -9,3 +9,4 @@ cancionDjRouter.get("/", canciondjMethods.findAll);
 cancionDjRouter.post("/", canciondjMethods.add);
 cancionDjRouter.get("/topcanciones/:fechaElegida", canciondjMethods.findAllTopCanciones);
 cancionDjRouter.delete("/", canciondjMethods.deleteAll);
+cancionDjRouter.get("/nuevanoche", canciondjMethods.nuevaNoche);

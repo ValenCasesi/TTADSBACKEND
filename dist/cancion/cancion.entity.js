@@ -27,6 +27,7 @@ __decorate([
 __decorate([
     OneToMany(() => CancionDj, (cancionDj) => cancionDj.cancion, {
         cascade: [Cascade.ALL],
+        orphanRemoval: true,
     }),
     __metadata("design:type", Object)
 ], Cancion.prototype, "cancionDj", void 0);

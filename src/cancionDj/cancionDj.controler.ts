@@ -46,12 +46,6 @@ async function add(req: Request, res: Response) {
   }
 }
 
-async function topCancionesFecha(fechaTop: Date) {
-  const cancionesDj = await em.find(CancionDj, { fechaActual: fechaTop }, { orderBy: { puntaje: 'DESC' } });
-  
-  return cancionesDj;
-}
-
 async function findAll(req: Request, res: Response) {
   try {
     const cancionDjs = await em.find(CancionDj, {})
@@ -89,21 +83,6 @@ async function update(req: Request, res: Response) {
   }
 }
 
-// async function findAllTopCanciones(req: Request, res: Response) {
-//   try {
-//     const fechaElegida = req.params
-//     const cancionDjs = await em.find(CancionDj, { actual: true , fechaActual: fechaElegida}, { populate: ['cancion'] });
-//     res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// }
-
-// async function formatDate(req: Request, res: Response){
-//   const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
-//   findAllTopCanciones(fechaElegida,x:response)
-// }
-
 async function findAllTopCanciones(req: Request,res:Response) {
   try {
     const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
@@ -116,9 +95,6 @@ async function findAllTopCanciones(req: Request,res:Response) {
 
 async function deleteAll(req: Request, res: Response) {
   try {
-    // const id = req.params.id;
-    // await em.nativeDelete(CancionDj, { id: id });
-    // res.status(200).send({ message: 'All matching entries deleted' });
     const cancionDjs = await em.find(CancionDj, {})
     cancionDjs.forEach(async (cancionDj) => {await em.removeAndFlush(cancionDj)})
     res.status(200).send({ message: 'All matching entries deleted' });
@@ -127,6 +103,28 @@ async function deleteAll(req: Request, res: Response) {
   }
 }
 
+async function updateAllActualFalse(req:Request,res: Response){
+  try {
+    const cancionDjs = await em.find(CancionDj, { actual: true });
+    for (const cancionDj of cancionDjs) {
+      cancionDj.actual = false;
+    }
+    await em.flush();
+    res.status(200).json({ message: 'Actualizado las CancionDj a estado actual Falso' });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function nuevaNoche(req:Request,res: Response){
+  try{
+    await djMethods.updateDjFechaActual;
+    await updateAllActualFalse;
+    res.status(200).json({ message: 'nuevaNoche creada' });
+  }catch(error:any){
+    res.status(500).json({ message: error.message });
+  }
+}
 
 export const canciondjMethods = {
   add,
@@ -134,5 +132,7 @@ export const canciondjMethods = {
   findAllVotacion,
   update,
   findAllTopCanciones,
-  deleteAll
+  deleteAll,
+  updateAllActualFalse,
+  nuevaNoche
 };

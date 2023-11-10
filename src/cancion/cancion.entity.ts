@@ -18,6 +18,7 @@ export class Cancion extends BaseEntity {
 
     @OneToMany(() => CancionDj, (cancionDj) => cancionDj.cancion, {
         cascade: [Cascade.ALL],
+        orphanRemoval: true,
       })
       cancionDj = new Collection<CancionDj>(this)
     

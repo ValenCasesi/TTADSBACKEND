@@ -4,7 +4,6 @@ import { Dj } from './dj.entity.js'
 
 const em = orm.em
 
-
 async function findAll(req: Request, res: Response) {
   try {
     const djs = await em.find(Dj, {}, { orderBy: { actual: 'DESC' } });
@@ -25,15 +24,6 @@ async function findOne(req: Request, res: Response) {
     res.status(500).json({ message: error.message })
   }
 }
-// async function findOneActual(res: Response) {
-//   try {
-//     const dj = await em.findOneOrFail(Dj, { actual:true })
-//     res.status(200).json({ message: 'DjActual encontrado', data: dj })
-//     return dj;
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
 
 async function findOneActual(res: Response) {
   try {
@@ -46,20 +36,6 @@ async function findOneActual(res: Response) {
     res.status(500).json({ message: error.message });
   }
 }
-
-// async function add(req: Request, res: Response) {
-//   try {
-//     const dj = em.create(Dj, req.body)
-//     const fechaActual = new Date();
-//     const fechaSinHora: Date = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
-//     dj.fechaActual = fechaSinHora;
-//     console.log(dj.fechaActual);
-//     await em.flush()
-//     res.status(201).json({ message: 'DJ creado', data: dj })
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
 
 async function add(req: Request, res: Response) {
   try {
@@ -105,7 +81,6 @@ async function updateActual(req: Request, res: Response) {
   }
 }
 
-
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id
@@ -117,6 +92,25 @@ async function remove(req: Request, res: Response) {
   }
 }
 
+async function updateDjFechaActual(req: Request, res: Response) {
+  try {
+    console.log("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+    const actualDj = await findOneActual(res);
+    if (actualDj) {
+      const fechaHoy = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+      );
+      actualDj.fechaActual = fechaHoy;
+      await em.flush();
+      res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const djMethods = {
   findAll,
   findOne,
@@ -125,4 +119,5 @@ export const djMethods = {
   update,
   updateActual,
   remove,
+  updateDjFechaActual
 };
