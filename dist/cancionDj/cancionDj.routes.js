@@ -3,6 +3,7 @@ import { canciondjMethods } from "./cancionDj.controler.js";
 export const cancionDjRouter = Router();
 cancionDjRouter.put("/:id/votacion", canciondjMethods.update);
 cancionDjRouter.get("/votacion", canciondjMethods.findAllVotacion);
+cancionDjRouter.get("/fechas", canciondjMethods.findAllFechas);
 cancionDjRouter.get("/", canciondjMethods.findAll);
 cancionDjRouter.post("/", canciondjMethods.add);
 cancionDjRouter.get("/topcanciones/:fechaElegida", canciondjMethods.findAllTopCanciones);

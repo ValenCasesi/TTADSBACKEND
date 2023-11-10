@@ -9,9 +9,9 @@ POST http://localhost:3000/api/djs
 Content-Type: application/json
 
 {
-    "nombre": "Valen DJ",
-    "instagram": "vdj",
-    "tel":6143,
+    "nombre": "meca DJ",
+    "instagram": "mdj",
+    "tel":614352,
     "actual":false
 }
 
