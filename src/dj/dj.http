@@ -9,9 +9,9 @@ POST http://localhost:3000/api/djs
 Content-Type: application/json
 
 {
-    "nombre": "meca DJ",
-    "instagram": "mdj",
-    "tel":614352,
+    "nombre": "prueba DJ",
+    "instagram": "pdj",
+    "tel":451,
     "actual":false
 }
 
@@ -52,7 +52,7 @@ Content-Type: application/json
 }
 
 ### DELETE
-DELETE https://fiestaappapi.onrender.com/api/djs/65469103185c3f0963fb7c6d
+DELETE https://fiestaappapi.onrender.com/api/djs/654e8fa609380ce52a840c77
 
 
 
