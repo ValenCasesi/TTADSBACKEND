@@ -94,7 +94,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id
-    const cancion = em.getReference(Cancion, id)
+    const cancion = em.findOneOrFail(Cancion, id)
     await em.removeAndFlush(cancion)
     res.status(200).send({ message: 'Cancion deleted' })
   } catch (error: any) {

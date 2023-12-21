@@ -128,21 +128,26 @@ async function deleteAll(req: Request, res: Response) {
 
 async function updateAllActualFalse(req:Request,res: Response){
   try {
-    const cancionDjs = await em.find(CancionDj, { actual: true });
-    for (const cancionDj of cancionDjs) {
-      cancionDj.actual = false;
-    }
-    await em.flush();
+      await setAllActualFalse()
+
     res.status(200).json({ message: 'Actualizado las CancionDj a estado actual Falso' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
+async function setAllActualFalse() {
+  const cancionDjs = await em.find(CancionDj, { actual: true });
+  for (const cancionDj of cancionDjs) {
+    cancionDj.actual = false;
+  }
+  await em.flush();
+}
+
 async function nuevaNoche(req:Request,res: Response){
   try{
-    await djMethods.updateDjFechaActual;
-    await updateAllActualFalse;
+    await djMethods.updateDjFechaActual(req,res);
+    await setAllActualFalse();
     res.status(200).json({ message: 'nuevaNoche creada' });
   }catch(error:any){
     res.status(500).json({ message: error.message });
