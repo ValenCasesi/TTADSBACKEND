@@ -9,7 +9,7 @@ async function findAll(req: Request, res: Response) {
     const canciones = await em.find(Cancion, {})
     res
       .status(200)
-      .json({ message: 'found all Canciones', data: canciones })
+      .json({ message: 'Se encontraron todas las Canciones', data: canciones })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -21,7 +21,7 @@ async function findOne(req: Request, res: Response) {
     const cancion = await em.findOneOrFail(Cancion, { id })
     res
       .status(200)
-      .json({ message: 'found Cancion', data: cancion })
+      .json({ message: 'Se encontro la Cancion', data: cancion })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -54,7 +54,7 @@ async function add(req: Request, res: Response) {
     } else {
       const cancionNueva = em.create(Cancion, req.body);
       await em.flush();
-      res.status(201).json({ message: 'Cancion creada', data: cancionNueva });
+      res.status(201).json({ message: 'Cancion creada exitosamente!', data: cancionNueva });
       return cancionNueva;
     }
   } catch (error: any) {
@@ -85,7 +85,7 @@ async function update(req: Request, res: Response) {
     const cancion = em.getReference(Cancion, id)
     em.assign(cancion, req.body)
     await em.flush()
-    res.status(200).json({ message: 'Cancion updated' })
+    res.status(200).json({ message: 'Cancion actualizada exitosamente!' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -96,7 +96,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id
     const cancion = em.findOneOrFail(Cancion, id)
     await em.removeAndFlush(cancion)
-    res.status(200).send({ message: 'Cancion deleted' })
+    res.status(200).send({ message: 'Cancion eliminada exitosamente!' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
