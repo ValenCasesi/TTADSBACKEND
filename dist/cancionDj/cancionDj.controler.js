@@ -31,7 +31,7 @@ async function add(req, res) {
                 cancionDj.fechaActual = actualDj.fechaActual;
                 cancionDj.puntaje = 0;
                 await em.persistAndFlush(cancionDj);
-                return res.status(201).json({ message: 'CancionDj agregada a las que sonaran', data: cancionDj });
+                return res.status(201).json({ message: 'CancionDj agregadas exitosamente!', data: cancionDj });
             }
         }
     }
@@ -44,7 +44,7 @@ async function findAll(req, res) {
         const cancionDjs = await em.find(CancionDj, {});
         res
             .status(200)
-            .json({ message: 'found all CancionDj', data: cancionDjs });
+            .json({ message: 'todas las CancionDj', data: cancionDjs });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -72,7 +72,7 @@ async function findAllFechas(req, res) {
 async function findAllVotacion(req, res) {
     try {
         const cancionDjs = await em.find(CancionDj, { actual: true }, { populate: ['cancion'] });
-        res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+        res.status(200).json({ message: 'Se encontraron todas las CancionDj actuales', data: cancionDjs });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -83,11 +83,11 @@ async function update(req, res) {
         const id = req.params.id;
         const cancionDj = await em.findOne(CancionDj, { id });
         if (!cancionDj) {
-            return res.status(404).json({ message: 'CancionDj not found' });
+            return res.status(404).json({ message: 'CancionDj no encontrada' });
         }
         cancionDj.puntaje += 1;
         await em.flush();
-        res.status(200).json({ message: 'CancionDj updated' });
+        res.status(200).json({ message: 'Se ha registrado la votacion exitosamente!' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -133,7 +133,7 @@ async function nuevaNoche(req, res) {
     try {
         await djMethods.updateDjFechaActual(req, res);
         await setAllActualFalse();
-        res.status(200).json({ message: 'nuevaNoche creada' });
+        res.status(200).json({ message: 'Nueva Noche creada exitosamente!' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });

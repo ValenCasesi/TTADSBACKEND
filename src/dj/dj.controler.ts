@@ -103,7 +103,7 @@ async function updateDjFechaActual(req: Request, res: Response) {
       );
       actualDj.fechaActual = fechaHoy;
       await em.flush();
-      res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
+      //res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });

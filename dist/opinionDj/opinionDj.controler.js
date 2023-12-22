@@ -48,7 +48,7 @@ async function add(req, res) {
         const opiniondj = em.create(OpinionDj, req.body);
         opiniondj.dj = actualDj;
         await em.flush();
-        res.status(201).json({ message: 'OpinionDj creada', data: opiniondj });
+        res.status(201).json({ message: 'Se ha registrado la opinion del Dj exitosamente!', data: opiniondj });
     }
     catch (error) {
         res.status(500).json({ message: error.message });

@@ -38,7 +38,7 @@ async function add(req, res) {
     try {
         const newDj = em.create(Dj, req.body);
         await em.flush();
-        res.status(201).json({ message: 'DJ created', data: newDj });
+        res.status(201).json({ message: 'DJ creado exitosamente!', data: newDj });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -50,7 +50,7 @@ async function update(req, res) {
         const dj = em.getReference(Dj, id);
         em.assign(dj, req.body);
         await em.flush();
-        res.status(200).json({ message: 'Dj updated' });
+        res.status(200).json({ message: 'Dj actualizado exitosamente!' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -73,7 +73,7 @@ async function updateActual(req, res) {
             }
             await em.persistAndFlush(item);
         });
-        res.status(200).json({ message: 'dj updated' });
+        res.status(200).json({ message: 'Dj actualizado exitosamente!' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -84,7 +84,7 @@ async function remove(req, res) {
         const id = req.params.id;
         const dj = em.getReference(Dj, id);
         await em.removeAndFlush(dj);
-        res.status(200).send({ message: 'DJ deleted' });
+        res.status(200).send({ message: 'DJ elminado correctamente' });
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -92,13 +92,12 @@ async function remove(req, res) {
 }
 async function updateDjFechaActual(req, res) {
     try {
-        console.log("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         const actualDj = await findOneActual(res);
         if (actualDj) {
             const fechaHoy = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
             actualDj.fechaActual = fechaHoy;
             await em.flush();
-            res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
+            //res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
         }
     }
     catch (error) {

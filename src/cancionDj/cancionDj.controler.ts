@@ -146,9 +146,9 @@ async function setAllActualFalse() {
 
 async function nuevaNoche(req:Request,res: Response){
   try{
-    let res1 = await djMethods.updateDjFechaActual(req,res);
-    let res2 = await setAllActualFalse();
-    res.status(200).json({ message: 'nuevaNoche creada exitosamente!' });
+    await djMethods.updateDjFechaActual(req,res);
+    await setAllActualFalse();
+    res.status(200).json({ message: 'Nueva Noche creada exitosamente!' });
   }catch(error:any){
     res.status(500).json({ message: error.message });
   }
