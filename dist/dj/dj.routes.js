@@ -14,4 +14,5 @@ djRouter.get("/:id", djMethods.findOne);
 djRouter.post('/', djMethods.add);
 djRouter.put("/:id", djMethods.update);
 djRouter.put("/actual/:id", djMethods.updateActual);
+djRouter.get("/actual", djMethods.findOneActual);
 //# sourceMappingURL=dj.routes.js.map

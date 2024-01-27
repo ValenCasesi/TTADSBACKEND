@@ -4,13 +4,13 @@ import {
     Property,
     Cascade,
     Collection,
-    ManyToOne,
+    OneToOne,
     Rel
 } from '@mikro-orm/core'
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {OpinionDj} from '../opinionDj/opinionDj.entity.js'
 import {CancionDj} from '../cancionDj/cancionDj.entity.js'
-
+import {Usuario} from '../usuario/usuario.entity.js'
 
 @Entity()
 export class Dj extends BaseEntity {
@@ -42,4 +42,7 @@ export class Dj extends BaseEntity {
     cascade: [Cascade.ALL],
   })
   cancionDj = new Collection<CancionDj>(this);
+
+  @OneToOne(() => Usuario, { nullable: true }) 
+    usuario!: Usuario;
 }

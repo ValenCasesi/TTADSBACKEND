@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, OneToMany, Property, Cascade, Collection } from '@mikro-orm/core';
+import { Entity, OneToMany, Property, Cascade, Collection, OneToOne } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/db/baseEntity.entity.js';
 import { OpinionDj } from '../opinionDj/opinionDj.entity.js';
 import { CancionDj } from '../cancionDj/cancionDj.entity.js';
+import { Usuario } from '../usuario/usuario.entity.js';
 export let Dj = class Dj extends BaseEntity {
     constructor() {
         super(...arguments);
@@ -51,6 +52,10 @@ __decorate([
     }),
     __metadata("design:type", Object)
 ], Dj.prototype, "cancionDj", void 0);
+__decorate([
+    OneToOne(() => Usuario, { nullable: true }),
+    __metadata("design:type", Usuario)
+], Dj.prototype, "usuario", void 0);
 Dj = __decorate([
     Entity()
 ], Dj);
