@@ -23,3 +23,8 @@ npm run start:dev
 ```sh
 npm run build
 ```
+
+### Integrantes
+
+- Casesi Valentino - 46799
+- Juan Ignacio Campora - 46959
