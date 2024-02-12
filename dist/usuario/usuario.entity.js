@@ -14,7 +14,7 @@ import { Dj } from '../dj/dj.entity.js';
 export let Usuario = class Usuario extends BaseEntity {
 };
 __decorate([
-    Property({ nullable: false, type: Date }),
+    Property({ nullable: false }),
     __metadata("design:type", String)
 ], Usuario.prototype, "uid", void 0);
 __decorate([

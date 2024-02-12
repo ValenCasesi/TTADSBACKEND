@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import express from 'express'
 import { usuarioRouter } from './usuario/usuario.routes.js'
+import { tipoUsuarioRouter } from './tipoUsuario/tipoUsuario.routes.js'
 import { djRouter } from './dj/dj.routes.js'
 import { cancionRouter } from './cancion/cancion.routes.js'
 import { cancionDjRouter } from './cancionDj/cancionDj.routes.js'
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 })
 //antes de las rutas y middlewares de negocio
 app.use('/api/usuarios', usuarioRouter)
+app.use('/api/tipoUsuario', tipoUsuarioRouter)
 app.use('/api/djs', djRouter)
 app.use('/api/canciones', cancionRouter)
 app.use('/api/canciondj', cancionDjRouter)

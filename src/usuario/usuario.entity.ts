@@ -11,7 +11,7 @@ import {Dj} from '../dj/dj.entity.js'
 
 @Entity()
 export class Usuario extends BaseEntity {
-    @Property({ nullable: false, type: Date})
+    @Property({ nullable: false})
     uid!: string
 
     @Property({nullable: true})
