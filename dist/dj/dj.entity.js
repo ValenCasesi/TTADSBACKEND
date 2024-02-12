@@ -17,6 +17,8 @@ export let Dj = class Dj extends BaseEntity {
         this.fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         this.opinionDjs = new Collection(this);
         this.cancionDj = new Collection(this);
+        // @OneToOne(() => Usuario, { nullable: true }) 
+        //   usuario!: Usuario;
     }
 };
 __decorate([
