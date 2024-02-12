@@ -29,6 +29,6 @@ export class Usuario extends BaseEntity {
     @ManyToOne(() => tipoUsuario, { nullable: false })
     tipoUsuario!: Rel<tipoUsuario>
     
-    // @OneToOne(() => Dj, { nullable: true }) 
-    // dj!: Dj;
+    @OneToOne(() => Dj, { nullable: true }) 
+    dj!: Dj;
 }
