@@ -70,7 +70,7 @@ async function update(req: Request, res: Response) {
     const opiniondj = em.getReference(OpinionDj, id)
     em.assign(opiniondj, req.body)
     await em.flush()
-    res.status(200).json({ message: 'OpinionDj updated' })
+    res.status(200).json({ message: 'OpinionDj actualizada' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -81,7 +81,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id
     const opiniondj = em.getReference(OpinionDj, id)
     await em.removeAndFlush(opiniondj)
-    res.status(200).send({ message: 'OpinionDj deleted' })
+    res.status(200).send({ message: 'OpinionDj eliminada' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
