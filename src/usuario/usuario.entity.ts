@@ -1,6 +1,7 @@
 import {
     Entity,
     Property,
+    Cascade,
     ManyToOne,
     Rel,
     OneToOne
@@ -29,6 +30,6 @@ export class Usuario extends BaseEntity {
     @ManyToOne(() => tipoUsuario, { nullable: false })
     tipoUsuario!: Rel<tipoUsuario>
     
-    @OneToOne(() => Dj, { nullable: true }) 
+    @OneToOne(() => Dj, { nullable: true, cascade: [Cascade.ALL], orphanRemoval: true,}) 
     dj!: Dj;
 }
