@@ -82,7 +82,7 @@ async function getGmailDj(req, res) {
         }
         const dj = await em.findOne(Usuario, { dj: djBBDD });
         if (!dj) {
-            return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
+            return res.status(200).json({ message: 'No se ha encontrado el usuario.' });
         }
         return res.status(200).json({ message: 'Gmail encontrado', data: dj });
     }
