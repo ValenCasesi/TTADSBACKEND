@@ -44,7 +44,7 @@ async function logout(req: Request, res: Response) {
     const uid = req.params.uid;
     const dj = await em.findOne(Usuario, {uid: uid})
     if (!dj) {
-      return res.status(200).json({ message: 'No se ha encontrado el usuario.' });
+      return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
     }
     dj.logueado = false;
     await em.flush();
@@ -117,9 +117,19 @@ async function getGmailDj(req: Request, res: Response) {
   }
 }
 
+async function getAll(req: Request, res: Response) {
+  try {
+    const usuarios = await em.find(Usuario, {});
+    res.status(200).json({ message: 'Usuarios encontrados', data: usuarios });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const usuarioMethods = {
   login,
   logout,
   registerDj,
-  getGmailDj
+  getGmailDj,
+  getAll,
 };
