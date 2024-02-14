@@ -24,7 +24,7 @@ async function add(req: Request, res: Response) {
   try {
     const cancionExistente = await cancionMethods.addSinRes(req, res);
     if (res.statusCode !== 500) {
-        const actualDj = await djMethods.findOneActual(res);
+        const actualDj = await em.findOne(Dj, { actual: true });
         if (!actualDj) {
             return res.status(404).json({ message: 'No hay un Dj Actual' });
         }
@@ -108,7 +108,7 @@ async function update(req: Request, res: Response) {
 
 async function findAllTopCanciones(req: Request,res:Response) {
   try {
-    const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');
+    const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');  
     const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: new Date(fechaElegida) } }, { populate: ['cancion'] });
     res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
   } catch (error: any) {

@@ -91,3 +91,7 @@ GET http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
 
 ### GET UPDATE ACTUAL
 GET http://localhost:3000/api/djs/fechanueva
+
+
+### GET ACTUAL
+GET http://localhost:3000/api/djs/actual

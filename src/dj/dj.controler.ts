@@ -25,13 +25,13 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
-async function findOneActual(res: Response) {
+async function findOneActual(req: Request, res: Response) {
   try {
-    const actualDj = await em.findOneOrFail(Dj, { actual: true });
+    const actualDj = await em.findOne(Dj, { actual: true });
     if (!actualDj) {
       res.status(404).json({ message: 'No se econtro dj actual' });
     }
-    return actualDj;
+    res.status(200).json({ message: 'Dj actual encontrado', data: actualDj });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -94,7 +94,7 @@ async function remove(req: Request, res: Response) {
 
 async function updateDjFechaActual(req: Request, res: Response) {
   try {
-    const actualDj = await findOneActual(res);
+    const actualDj = await em.findOne(Dj, { actual: true });
     if (actualDj) {
       const fechaHoy = new Date(
         new Date().getFullYear(),
@@ -104,6 +104,9 @@ async function updateDjFechaActual(req: Request, res: Response) {
       actualDj.fechaActual = fechaHoy;
       await em.flush();
       //res.status(200).json({ message: 'Fecha actualizada', data: actualDj });
+    }
+    else {
+      res.status(404).json({ message: 'No se encontro dj actual' });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
