@@ -38,6 +38,21 @@ async function login(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function logout(req, res) {
+    try {
+        const uid = req.params.uid;
+        const dj = await em.findOne(Usuario, { uid: uid });
+        if (!dj) {
+            return res.status(200).json({ message: 'No se ha encontrado el usuario.' });
+        }
+        dj.logueado = false;
+        await em.flush();
+        res.status(200).json({ message: 'Sesión cerrada correctamente' });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 async function registerDj(req, res) {
     try {
         const mail = req.body.mail;
@@ -105,6 +120,7 @@ async function getGmailDj(req, res) {
 }
 export const usuarioMethods = {
     login,
+    logout,
     registerDj,
     getGmailDj
 };
