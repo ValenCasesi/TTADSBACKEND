@@ -7,7 +7,7 @@ const em = orm.em
 async function findAll(req: Request, res: Response) {
   try {
     const djs = await em.find(Dj, {}, { orderBy: { actual: 'DESC' } });
-    res.status(200).json({ message: 'found all djs', data: djs });
+    res.status(200).json({ message: 'Todos los djs encontrados:', data: djs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -64,7 +64,7 @@ async function updateActual(req: Request, res: Response) {
     const id = req.params.id;
     const dj = await em.findOne(Dj, id);
     if (!dj) {
-      return res.status(404).json({ message: 'Dj not found' });
+      return res.status(404).json({ message: 'Dj no encontrado' });
     }
     const allDjs = await em.find(Dj, {});
     allDjs.forEach(async (item) => {
@@ -86,7 +86,7 @@ async function remove(req: Request, res: Response) {
     const id = req.params.id
     const dj = em.getReference(Dj, id)
     await em.removeAndFlush(dj)
-    res.status(200).send({ message: 'DJ elminado correctamente' })
+    res.status(200).send({ message: 'DJ eliminado correctamente' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }

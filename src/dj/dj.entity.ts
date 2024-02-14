@@ -26,11 +26,8 @@ export class Dj extends BaseEntity {
   @Property()
   actual!: boolean;
 
-  @Property({ type: String, nullable: false })
-  fechaActual: String = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
-    new Date().getDate()).toISOString().split('T')[0];
+  @Property()
+  fechaActual!: String;
 
   @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.dj, {
     cascade: [Cascade.ALL],
