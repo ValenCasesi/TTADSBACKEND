@@ -48,15 +48,28 @@ async function registerDj(req, res) {
         }
         const dj = await em.findOne(Usuario, { dj: djBBDD });
         if (!dj) {
-            const newUsuario = await em.create(Usuario, req.body);
-            newUsuario.logueado = true;
-            const tipoDj = await em.findOneOrFail(tipoUsuario, { rol: "Dj" });
-            newUsuario.tipoUsuario = tipoDj;
-            newUsuario.dj = djBBDD;
-            await em.flush();
-            res
-                .status(201)
-                .json({ message: "Gmail de acceso del dj guardado correctamente.", data: newUsuario });
+            const dj = await em.findOne(Usuario, { mail: mail });
+            if (dj) {
+                dj.logueado = true;
+                const tipoDj = await em.findOneOrFail(tipoUsuario, { rol: "Dj" });
+                dj.tipoUsuario = tipoDj;
+                dj.dj = djBBDD;
+                await em.flush();
+                res
+                    .status(201)
+                    .json({ message: "Usuario cliente transformado a Dj y mail de acceso guardado correctamente.", data: dj });
+            }
+            else {
+                const newUsuario = await em.create(Usuario, req.body);
+                newUsuario.logueado = true;
+                const tipoDj = await em.findOneOrFail(tipoUsuario, { rol: "Dj" });
+                newUsuario.tipoUsuario = tipoDj;
+                newUsuario.dj = djBBDD;
+                await em.flush();
+                res
+                    .status(201)
+                    .json({ message: "Gmail de acceso del dj guardado correctamente.", data: newUsuario });
+            }
         }
         else {
             if (dj.mail != mail) {
