@@ -75,7 +75,10 @@ async function registerDj(req: Request, res: Response) {
 async function getGmailDj(req: Request, res: Response) {
   try {
     const idDj = req.params.idDj;
-    const djBBDD = await em.findOneOrFail(Dj, {id: idDj});
+    const djBBDD = await em.findOne(Dj, {id: idDj});
+    if (!djBBDD) {
+      return res.status(404).json({ message: 'No se ha encontrado el dj.' });
+    }
     const dj = await em.findOne(Usuario, {dj: djBBDD})
     if (!dj) {
       return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
