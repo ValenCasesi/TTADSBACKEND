@@ -13,8 +13,11 @@ import {Cancion} from '../cancion/cancion.entity.js'
 
 @Entity()
 export class CancionDj extends BaseEntity {
-    @Property({ nullable: false, type: Date})
-    fechaActual: Date = new Date()
+    @Property({ nullable: false, type: String})
+    fechaActual: String = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    new Date().getDate()).toISOString().split('T')[0];
 
     @Property({nullable: true})
     actual!: boolean

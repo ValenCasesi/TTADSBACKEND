@@ -62,9 +62,9 @@ async function findAllFechas(req: Request, res: Response) {
     const cancionDjs = await em.find(CancionDj, {});
     
     // Obtener todas las fechas sin repeticiones
-    const uniqueDates = new Set<string>();
+    const uniqueDates = new Set<String>();
     cancionDjs.forEach((cancionDj) => {
-      const fechaActual = cancionDj.fechaActual?.toLocaleDateString();
+      const fechaActual = cancionDj.fechaActual;
       if (fechaActual) {
         uniqueDates.add(fechaActual);
       }
@@ -109,7 +109,7 @@ async function update(req: Request, res: Response) {
 async function findAllTopCanciones(req: Request,res:Response) {
   try {
     const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');  
-    const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: new Date(fechaElegida) } }, { populate: ['cancion'] });
+    const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: fechaElegida } }, { populate: ['cancion'] });
     res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
