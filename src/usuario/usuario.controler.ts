@@ -3,9 +3,11 @@ import { orm } from '../shared/db/orm.js'
 import { Dj } from '../dj/dj.entity.js'
 import { Usuario } from './usuario.entity.js'
 import { tipoUsuario } from '../tipoUsuario/tipoUsuario.entity.js'
+import * as dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 
 const em = orm.em
-
+dotenv.config();
 async function login(req: Request, res: Response) {
   try {
     const uid = req.body.uid;
@@ -18,10 +20,16 @@ async function login(req: Request, res: Response) {
           newUsuario.logueado = true;
           const tipoCliente = await em.findOneOrFail(tipoUsuario, { rol: "Cliente" });
           newUsuario.tipoUsuario = tipoCliente;
+          const tokenPayload = {
+            id: newUsuario._id,
+            nombre: newUsuario.nombre,
+            mail: newUsuario.mail,
+            tipoU: newUsuario.tipoUsuario
+          }
           await em.flush();
-          res
-          .status(201)
-          .json({ message: "Usuario creado exitosamente!", data: newUsuario });
+          const token = jwt.sign(tokenPayload,'v4asd')
+          res.cookie("jwt",token)
+          //res.status(201).json({ message: "Usuario creado exitosamente!", data: newUsuario });
         }else{
           dj.uid = uid;
           dj.nombre = req.body.nombre;
