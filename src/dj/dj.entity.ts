@@ -26,7 +26,7 @@ export class Dj extends BaseEntity {
   @Property()
   actual!: boolean;
 
-  @Property()
+  @Property({nullable: true})
   fechaActual!: String;
 
   @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.dj, {
