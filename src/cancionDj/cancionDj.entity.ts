@@ -10,14 +10,12 @@ import {
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {Dj} from '../dj/dj.entity.js'
 import {Cancion} from '../cancion/cancion.entity.js'
+import { DateTime } from "luxon";
 
 @Entity()
 export class CancionDj extends BaseEntity {
     @Property({ nullable: false, type: String})
-    fechaActual: String = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
-    new Date().getDate()).toISOString().split('T')[0];
+    fechaActual: string = DateTime.now().setZone('UTC-3').toString().split('T')[0];
 
     @Property({nullable: true})
     actual!: boolean

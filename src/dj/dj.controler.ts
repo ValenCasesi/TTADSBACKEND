@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { Dj } from './dj.entity.js'
+import { DateTime } from "luxon";
 
 const em = orm.em
 
@@ -96,10 +97,12 @@ async function updateDjFechaActual(req: Request, res: Response) {
   try {
     const actualDj = await em.findOne(Dj, { actual: true });
     if (actualDj) {
-      const fechaHoy =  new Date(
-                                  new Date().getFullYear(),
-                                  new Date().getMonth(),
-                                  new Date().getDate()).toISOString().split('T')[0];
+
+      const fechaHoy = DateTime.now().setZone('UTC-3').toString().split('T')[0];
+      // const fechaHoy =  new Date(
+      //                             new Date().getFullYear(),
+      //                             new Date().getMonth(),
+      //                             new Date().getDate()).toISOString().split('T')[0];
       actualDj.fechaActual = fechaHoy;
       await em.flush();
       //res.status(200).json({ message: 'Fecha actualizada', data: actualDj });

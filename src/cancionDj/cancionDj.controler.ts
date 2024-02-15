@@ -108,9 +108,9 @@ async function update(req: Request, res: Response) {
 
 async function findAllTopCanciones(req: Request,res:Response) {
   try {
-    const fechaElegida = req.params.fechaElegida.split('/').reverse().join('-');  
-    const cancionDjs = await em.find(CancionDj, { actual: true, fechaActual: { $eq: fechaElegida } }, { populate: ['cancion'] });
-    res.status(200).json({ message: 'found all CancionDj actuales', data: cancionDjs });
+    const fechaElegida = req.params.fechaElegida.split('.').join('-');  
+    const cancionDjs = await em.find(CancionDj, { fechaActual: { $eq: fechaElegida } }, { populate: ['cancion'] });
+    res.status(200).json({ message: 'Se encontro el top canciones', data: cancionDjs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

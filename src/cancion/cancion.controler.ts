@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { Cancion } from './cancion.entity.js'
+import { fail } from 'assert'
 
 const em = orm.em
 
@@ -64,8 +65,11 @@ async function add(req: Request, res: Response) {
 async function addSinRes(req: Request, res: Response) {
   try {
     const { nombre, autor } = req.body;
+    if (!nombre || !autor) {
+      res.status(400).json({ message: 'Faltan datos' });
+      return;
+    }
     const cancionExistente = await em.findOne(Cancion, { nombre, autor });
-
     if (cancionExistente) {
       return cancionExistente;
     } else {

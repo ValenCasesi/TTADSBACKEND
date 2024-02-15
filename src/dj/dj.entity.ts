@@ -27,7 +27,7 @@ export class Dj extends BaseEntity {
   actual!: boolean;
 
   @Property({nullable: true})
-  fechaActual!: String;
+  fechaActual!: string;
 
   @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.dj, {
     cascade: [Cascade.ALL],
