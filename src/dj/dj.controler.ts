@@ -29,7 +29,7 @@ async function findOneActual(req: Request, res: Response) {
   try {
     const actualDj = await em.findOne(Dj, { actual: true });
     if (!actualDj) {
-      res.status(404).json({ message: 'No se econtro dj actual' });
+      return res.status(404).json({ message: 'No se encontro dj actual' });
     }
     res.status(200).json({ message: 'Dj actual encontrado', data: actualDj });
   } catch (error: any) {
