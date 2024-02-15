@@ -39,8 +39,16 @@ async function login(req: Request, res: Response) {
         } 
     }else{
       usuario.logueado = true;
+      const tokenPayload = {
+        id: usuario._id,
+        nombre: usuario.nombre,
+        mail: usuario.mail,
+        tipoU: usuario.tipoUsuario
+      }
       await em.flush();
-      res.status(200).json({ message: 'Se ha realizado el login exitosamente!' });
+      const token = jwt.sign(tokenPayload,'v4asd')
+      res.cookie("jwt",token)
+      //res.status(200).json({ message: 'Se ha realizado el login exitosamente!' });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
