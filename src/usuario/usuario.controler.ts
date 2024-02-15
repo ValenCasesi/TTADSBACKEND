@@ -8,6 +8,17 @@ import jwt from 'jsonwebtoken'
 
 const em = orm.em
 dotenv.config();
+
+async function findTipoUsuario(id: tipoUsuario, res: Response) {
+  try {
+    const id1 = id.id
+    const rol = await em.findOneOrFail(tipoUsuario, { id:id1 })
+    return rol
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 async function login(req: Request, res: Response) {
   try {
     const uid = req.body.uid;
@@ -28,32 +39,41 @@ async function login(req: Request, res: Response) {
           }
           await em.flush();
           const token = jwt.sign(tokenPayload,'v4asd')
-          res.cookie("jwt",token)
-          //res.status(201).json({ message: "Usuario creado exitosamente!", data: newUsuario });
+          //res.cookie("jwt",token)
+          res.status(201).json({ message: "Usuario creado exitosamente!", data: token });
         }else{
           dj.uid = uid;
           dj.nombre = req.body.nombre;
           dj.logueado = true;  
           await em.persistAndFlush(dj);
-          return res.status(201).json({ message: 'Data del Dj actualizada', data: dj });
+          const tokenPayload = {
+            id: dj._id,
+            nombre: dj.nombre,
+            mail: dj.mail
+          }
+          const token = jwt.sign(tokenPayload,'v4asd')
+          //res.cookie("jwt",token)
+          res.status(201).json({ message: 'Data del Dj actualizada', data: token });
         } 
     }else{
       usuario.logueado = true;
+      const rol = await findTipoUsuario(usuario.tipoUsuario,res)
       const tokenPayload = {
         id: usuario._id,
         nombre: usuario.nombre,
         mail: usuario.mail,
-        tipoU: usuario.tipoUsuario
+        tipoU: rol
       }
       await em.flush();
       const token = jwt.sign(tokenPayload,'v4asd')
-      res.cookie("jwt",token)
-      //res.status(200).json({ message: 'Se ha realizado el login exitosamente!' });
+      //res.cookie("jwt",token)
+      res.status(200).json({ message: 'Se ha realizado el login exitosamente!', data: token });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
+
 
 async function logout(req: Request, res: Response) {
   try {
