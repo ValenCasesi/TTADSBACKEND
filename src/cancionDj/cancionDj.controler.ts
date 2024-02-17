@@ -6,6 +6,7 @@ import { Cancion } from '../cancion/cancion.entity.js'
 import { cancionMethods } from '../cancion/cancion.controler.js'
 import { djMethods } from '../dj/dj.controler.js'
 import { CancionDj } from './cancionDj.entity.js'
+import { usuarioMethods } from '../usuario/usuario.controler.js'
 
 const em = orm.em
 
@@ -147,6 +148,7 @@ async function setAllActualFalse() {
 async function nuevaNoche(req:Request,res: Response){
   try{
     await djMethods.updateDjFechaActual(req,res);
+    await usuarioMethods.resetVotacion(req,res);
     await setAllActualFalse();
     res.status(200).json({ message: 'Nueva Noche creada exitosamente!' });
   }catch(error:any){

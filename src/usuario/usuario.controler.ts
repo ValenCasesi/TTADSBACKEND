@@ -126,10 +126,58 @@ async function getAll(req: Request, res: Response) {
   }
 }
 
+async function verificarDjActual(req: Request, res: Response) {
+  try {
+    const uid = req.params.uid;
+    const usuario = await em.findOne(Usuario, {uid: uid})
+    if (!usuario) {
+      return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
+    }
+    const dj = await em.findOne(Dj, {id:usuario.dj.id});
+    if (usuario.tipoUsuario.rol == "Dj"){
+      return res.status(200).json({ message: 'Actual', data: usuario });
+    }else{
+      return res.status(200).json({ message: 'No es el Dj actual', data: usuario });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function yaVoto(req: Request, res: Response) {
+  try {
+    const uid = req.params.uid;
+    const usuario = await em.findOne(Usuario, {uid: uid})
+    if (!usuario) {
+      return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
+    }
+    usuario.votoRealizado=true;
+    em.flush();
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function resetVotacion(req: Request, res: Response) {
+  try {
+    const usuarios = await em.find(Usuario, {votoRealizado: true});
+    usuarios.forEach((usuario) => {
+      usuario.votoRealizado = false;
+    });
+    await em.flush();
+    return res.status(200).json({ message: 'Votacion reseteada'});
+  }catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const usuarioMethods = {
   login,
   logout,
   registerDj,
   getGmailDj,
   getAll,
+  verificarDjActual,
+  yaVoto,
+  resetVotacion,
 };
