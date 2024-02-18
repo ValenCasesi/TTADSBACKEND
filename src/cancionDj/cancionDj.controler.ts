@@ -148,7 +148,7 @@ async function setAllActualFalse() {
 async function nuevaNoche(req:Request,res: Response){
   try{
     await djMethods.updateDjFechaActual(req,res);
-    await usuarioMethods.resetVotacion(req,res);
+    await usuarioMethods.resetVotacion(req);
     await setAllActualFalse();
     res.status(200).json({ message: 'Nueva Noche creada exitosamente!' });
   }catch(error:any){

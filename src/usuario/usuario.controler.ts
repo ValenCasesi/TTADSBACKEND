@@ -5,19 +5,10 @@ import { Usuario } from './usuario.entity.js'
 import { tipoUsuario } from '../tipoUsuario/tipoUsuario.entity.js'
 import * as dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
+import { fail } from 'assert'
 
 const em = orm.em
 dotenv.config();
-
-async function findTipoUsuario(id: tipoUsuario, res: Response) {
-  try {
-    const id1 = id.id
-    const rol = await em.findOneOrFail(tipoUsuario, { id:id1 })
-    return rol
-  } catch (error: any) {
-    res.status(500).json({ message: error.message })
-  }
-}
 
 async function login(req: Request, res: Response) {
   try {
@@ -31,16 +22,24 @@ async function login(req: Request, res: Response) {
           newUsuario.logueado = true;
           const tipoCliente = await em.findOneOrFail(tipoUsuario, { rol: "Cliente" });
           newUsuario.tipoUsuario = tipoCliente;
+          await em.flush();
           const tokenPayload = {
             id: newUsuario._id,
             nombre: newUsuario.nombre,
             mail: newUsuario.mail,
             tipoU: newUsuario.tipoUsuario
           }
-          await em.flush();
           const token = jwt.sign(tokenPayload,'v4asd')
           //res.cookie("jwt",token)
-          res.status(201).json({ message: "Usuario creado exitosamente!", data: token });
+          //En la data mandar el token y los datos del usuario
+          const data = {
+            token: token,
+            uid: newUsuario.uid,
+            nombre: newUsuario.nombre,
+            mail: newUsuario.mail,
+            tipo: getTipoUsuarioTexto(newUsuario.tipoUsuario)
+          }
+          res.status(201).json({ message: "Usuario creado exitosamente!", data: data });
         }else{
           dj.uid = uid;
           dj.nombre = req.body.nombre;
@@ -53,27 +52,45 @@ async function login(req: Request, res: Response) {
           }
           const token = jwt.sign(tokenPayload,'v4asd')
           //res.cookie("jwt",token)
-          res.status(201).json({ message: 'Data del Dj actualizada', data: token });
+          const data = {
+            token: token,
+            uid: dj.uid,
+            nombre: dj.nombre,
+            mail: dj.mail,
+            tipo: getTipoUsuarioTexto(dj.tipoUsuario)
+          }
+          res.status(201).json({ message: 'Data del Dj actualizada', data: data });
         } 
     }else{
       usuario.logueado = true;
-      const rol = await findTipoUsuario(usuario.tipoUsuario,res)
       const tokenPayload = {
         id: usuario._id,
         nombre: usuario.nombre,
         mail: usuario.mail,
-        tipoU: rol
+        tipoU: getTipoUsuarioTexto(usuario.tipoUsuario)
       }
       await em.flush();
       const token = jwt.sign(tokenPayload,'v4asd')
       //res.cookie("jwt",token)
-      res.status(200).json({ message: 'Se ha realizado el login exitosamente!', data: token });
+      const tipo = await getTipoUsuarioTexto(usuario.tipoUsuario)
+      const data = {
+        token: token,
+        uid: usuario.uid,
+        nombre: usuario.nombre,
+        mail: usuario.mail,
+        tipo: tipo
+      }
+      res.status(200).json({ message: 'Se ha realizado el login exitosamente!', data: data });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
+const getTipoUsuarioTexto = async (tipo: tipoUsuario) => {
+  const tipo_usuario = await em.findOneOrFail(tipoUsuario,{id: tipo.id})
+  return tipo_usuario.rol
+}
 
 async function logout(req: Request, res: Response) {
   try {
@@ -194,16 +211,15 @@ async function yaVoto(req: Request, res: Response) {
   }
 }
 
-async function resetVotacion(req: Request, res: Response) {
+async function resetVotacion(req: Request) {
   try {
     const usuarios = await em.find(Usuario, {votoRealizado: true});
     usuarios.forEach((usuario) => {
       usuario.votoRealizado = false;
     });
-    await em.flush();
-    return res.status(200).json({ message: 'Votacion reseteada'});
+    await em.flush();;
   }catch (error: any) {
-    res.status(500).json({ message: error.message });
+    fail;
   }
 }
 
