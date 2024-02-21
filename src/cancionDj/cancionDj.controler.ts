@@ -7,6 +7,7 @@ import { cancionMethods } from '../cancion/cancion.controler.js'
 import { djMethods } from '../dj/dj.controler.js'
 import { CancionDj } from './cancionDj.entity.js'
 import { usuarioMethods } from '../usuario/usuario.controler.js'
+import { Usuario } from '../usuario/usuario.entity.js'
 
 const em = orm.em
 
@@ -70,10 +71,7 @@ async function findAllFechas(req: Request, res: Response) {
         uniqueDates.add(fechaActual);
       }
     });
-
-    // Convertir el conjunto a un array si es necesario
     const uniqueDatesArray = Array.from(uniqueDates);
-
     res.status(200).json({ message: 'found all unique dates', data: uniqueDatesArray });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -90,15 +88,13 @@ async function findAllVotacion(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+async function sumarVoto(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const cancionDj = await em.findOne(CancionDj, { id });
-    
     if (!cancionDj) {
       return res.status(404).json({ message: 'CancionDj no encontrada' });
     }
-
     cancionDj.puntaje += 1
     await em.flush();
     res.status(200).json({ message: 'Se ha registrado la votacion exitosamente!' });
@@ -156,14 +152,87 @@ async function nuevaNoche(req:Request,res: Response){
   }
 }
 
+async function findDjPuntual(req:Request,res: Response){
+  try{
+    const uidDj = req.params.uidDj;
+    const usuarioDj = await em.findOne(Usuario, { uid: uidDj });
+    if (!usuarioDj) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    const dj = usuarioDj.dj
+    if (!dj) {
+      return res.status(404).json({ message: 'Dj no encontrado' });
+    }
+    const cancionDjs = await em.find(CancionDj, { dj }, {populate: ['cancion'],});
+    res.status(200).json({ message: 'Se encontraron todas las CancionDj del Dj', data: cancionDjs });
+  }catch(error:any){
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function update(req:Request,res: Response){
+  try{
+    const id = req.params.id;
+    const cancionDj = await em.findOne(CancionDj, { id });
+    if (!cancionDj) { return res.status(404).json({ message: 'CancionDj no encontrada' }); }
+    const cancion = cancionDj.cancion;
+    if (cancion) {
+      const igualCancionModificada = await em.findOne(Cancion, { nombre: req.body.nombre, autor: req.body.autor, id: { $ne: cancion.id }}); // Busco si hay una cancion con el mismo nombre y autor que como quedaria modificada
+      if( igualCancionModificada!=null){ // Aca si hay una cancion asi
+        const igualCancionDJModificada = await em.findOne(CancionDj, { cancion: igualCancionModificada}); // Busco si hay una canciondj con el mismo nombre y autor que como quedaria modificada
+        console.log(igualCancionDJModificada)
+        if (igualCancionDJModificada != null) { // Aca si hay una canciondj asi
+          igualCancionDJModificada.puntaje = igualCancionDJModificada.puntaje + cancionDj.puntaje; // Sumo los puntajes
+          await em.flush();
+          await em.removeAndFlush(cancionDj); // Elimino la canciondj que se modifico
+          await em.removeAndFlush(cancion); // Elimino la cancion que se modifico
+          res.status(200).json({ message: 'Se ha actualizado la Cancion exitosamente!' });
+        }else{ // Aca si no hay una canciondj asi
+          const actualDj = await em.findOne(Dj, { actual: true });
+          if (!actualDj) { return res.status(404).json({ message: 'No hay un Dj Actual' }); }
+          const nuevaCancionDj = new CancionDj();
+          nuevaCancionDj.dj = actualDj;
+          nuevaCancionDj.cancion = igualCancionModificada;
+          nuevaCancionDj.actual = true;
+          nuevaCancionDj.fechaActual = actualDj.fechaActual;
+          nuevaCancionDj.puntaje = cancionDj.puntaje;
+          await em.persistAndFlush(nuevaCancionDj);
+          await em.removeAndFlush(cancionDj); // Elimino la canciondj que se modifico
+          res.status(200).json({ message: 'Se ha actualizado la Cancion exitosamente!' });
+        }
+      }else{ // Aca si no hay una cancion asi
+        cancion.autor = req.body.autor;
+        cancion.nombre = req.body.nombre;
+        cancionDj.puntaje = req.body.puntaje;
+        await em.flush();
+        res.status(200).json({ message: 'Se ha actualizado la Cancion exitosamente!' });
+      }
+    }else{ res.status(404).json({ message: 'Cancion no encontrada' }); }
+  }catch(error:any){ res.status(500).json({ message: error.message }); }
+}
+
+async function deleteOne(req:Request,res: Response){
+  try{
+    const id = req.params.id;
+    const cancionDj = await em.findOne(CancionDj, { id });
+    if (!cancionDj) { return res.status(404).json({ message: 'CancionDj no encontrada' }); }
+    await em.removeAndFlush(cancionDj);
+    res.status(200).json({ message: 'Se ha eliminado la Cancion exitosamente!' });
+  }
+  catch(error:any){ res.status(500).json({ message: error.message }); }
+}
+
 export const canciondjMethods = {
   add,
   findAll,
   findAllVotacion,
-  update,
+  sumarVoto,
   findAllTopCanciones,
   deleteAll,
   updateAllActualFalse,
   nuevaNoche,
-  findAllFechas
+  findAllFechas,
+  findDjPuntual,
+  update,
+  deleteOne
 };

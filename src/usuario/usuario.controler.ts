@@ -186,11 +186,14 @@ async function verificarDjActual(req: Request, res: Response) {
     if (!usuario) {
       return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
     }
-    const dj = await em.findOne(Dj, {id:usuario.dj.id});
-    if (usuario.tipoUsuario.rol == "Dj"){
-      return res.status(200).json({ message: 'Actual', data: usuario });
+    if (usuario.dj == null){
+      return res.status(200).json({ message: 'No es un dj', esActual: false });
+    }
+    const djActual = await em.findOne(Dj, {actual: true});
+    if (djActual==usuario.dj){
+      return res.status(200).json({ message: 'Es el dj actual', esActual: true });
     }else{
-      return res.status(200).json({ message: 'No es el Dj actual', data: usuario });
+      return res.status(200).json({ message: 'No es el Dj actual', esActual: false });
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
