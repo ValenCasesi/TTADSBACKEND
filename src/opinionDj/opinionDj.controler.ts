@@ -51,7 +51,7 @@ async function add(req: Request, res: Response) {
     const actualDj = await em.findOne(Dj, { actual: true });
 
     if (!actualDj) {
-      return res.status(404).json({ message: 'No se encontro un DJ con actual=true' });
+      return res.status(404).json({ message: 'No existe un DJ actual' });
     }
 
     const opiniondj = em.create(OpinionDj, req.body);

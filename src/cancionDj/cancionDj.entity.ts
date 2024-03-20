@@ -15,7 +15,7 @@ import { DateTime } from "luxon";
 @Entity()
 export class CancionDj extends BaseEntity {
     @Property({ nullable: false, type: String})
-    fechaActual: string = DateTime.now().setZone('UTC-3').toString().split('T')[0];
+    fechaActual!: String
 
     @Property({nullable: true})
     actual!: boolean

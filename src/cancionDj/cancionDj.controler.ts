@@ -36,6 +36,7 @@ async function add(req: Request, res: Response) {
             cancionDj.dj= actualDj;
             cancionDj.cancion = cancionExistente;
             cancionDj.actual = true;
+            console.log(actualDj.fechaActual)
             cancionDj.fechaActual = actualDj.fechaActual;
             cancionDj.puntaje = 0;
 
@@ -53,7 +54,7 @@ async function findAll(req: Request, res: Response) {
     const cancionDjs = await em.find(CancionDj, {})
     res
       .status(200)
-      .json({ message: 'todas las CancionDj', data: cancionDjs })
+      .json({ message: 'Todas las CancionDj', data: cancionDjs })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -72,14 +73,14 @@ async function findAllFechas(req: Request, res: Response) {
       }
     });
     const uniqueDatesArray = Array.from(uniqueDates);
-    res.status(200).json({ message: 'found all unique dates', data: uniqueDatesArray });
+    res.status(200).json({ message: 'Todas las fechas', data: uniqueDatesArray });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
 
-async function findAllVotacion(req: Request, res: Response) {
+async function findAllActuales(req: Request, res: Response) {
   try {
     const cancionDjs = await em.find(CancionDj, { actual: true }, { populate: ['cancion'] });
     res.status(200).json({ message: 'Se encontraron todas las CancionDj actuales', data: cancionDjs });
@@ -222,10 +223,24 @@ async function deleteOne(req:Request,res: Response){
   catch(error:any){ res.status(500).json({ message: error.message }); }
 }
 
+async function findAllActualesIfDj(req:Request,res: Response){
+  try{
+    const uid = req.params.uid;
+    const usuario = await em.findOne(Usuario, { uid });
+    if (!usuario) { return res.status(404).json({ message: 'Usuario no encontrado' }); }
+    const dj = usuario.dj;
+    if (!dj) { return res.status(404).json({ message: 'Dj no encontrado' }); }
+    if (!dj.actual) { return res.status(404).json({ message: 'No es el actual DJ' }); }
+    const cancionDjs = await em.find(CancionDj, { actual:true }, {populate: ['cancion'],});
+    res.status(200).json({ message: 'Se encontraron todas las CancionDj actuales del Dj', data: cancionDjs });
+  }
+  catch(error:any){ res.status(500).json({ message: error.message }); }
+}
+
 export const canciondjMethods = {
   add,
   findAll,
-  findAllVotacion,
+  findAllActuales,
   sumarVoto,
   findAllTopCanciones,
   deleteAll,
@@ -233,6 +248,7 @@ export const canciondjMethods = {
   nuevaNoche,
   findAllFechas,
   findDjPuntual,
+  findAllActualesIfDj,
   update,
   deleteOne
 };

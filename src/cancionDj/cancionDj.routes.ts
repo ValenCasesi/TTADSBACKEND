@@ -3,7 +3,7 @@ import { canciondjMethods } from "./cancionDj.controler.js";
 
 export const cancionDjRouter = Router();
 
-cancionDjRouter.get("/votacion", canciondjMethods.findAllVotacion);
+cancionDjRouter.get("/votacion", canciondjMethods.findAllActuales);
 cancionDjRouter.get("/fechas", canciondjMethods.findAllFechas);
 cancionDjRouter.get("/nuevanoche", canciondjMethods.nuevaNoche);
 cancionDjRouter.get("/topcanciones/:fechaElegida", canciondjMethods.findAllTopCanciones);
