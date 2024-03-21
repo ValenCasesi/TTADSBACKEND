@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { Dj } from './dj.entity.js'
 import { DateTime } from "luxon";
+import { Usuario } from '../usuario/usuario.entity.js';
 
 const em = orm.em
 
@@ -115,6 +116,17 @@ async function updateDjFechaActual(req: Request, res: Response) {
   }
 }
 
+async function getFechaActualDj(req: Request, res: Response) {
+  try {
+    const usuario = await em.findOneOrFail(Usuario, { uid: req.params.uid });
+    const dj = await em.findOne(Dj, { id: usuario.dj.id });
+    if (dj) { res.status(200).json({ message: 'Fecha actual encontrada', fechaActual:dj.fechaActual }); }
+    else { res.status(404).json({ message: 'No se encontro dj actual' }); }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const djMethods = {
   findAll,
   findOne,
@@ -123,5 +135,6 @@ export const djMethods = {
   update,
   updateActual,
   remove,
-  updateDjFechaActual
+  updateDjFechaActual,
+  getFechaActualDj
 };

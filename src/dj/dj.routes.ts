@@ -7,6 +7,7 @@ export const djRouter = Router()
 
 djRouter.get("/", djMethods.findAll);
 djRouter.get('/opiniones',opinionMethods.findAll)
+djRouter.get('/getFechaActual/:uid',djMethods.getFechaActualDj)
 djRouter.get('/:id/opiniones',opinionMethods.findOpinionByDj)
 djRouter.get('/:id/opinion',opinionMethods.findOne)
 djRouter.get("/fechanueva", djMethods.updateDjFechaActual);
