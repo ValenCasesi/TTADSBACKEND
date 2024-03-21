@@ -4,11 +4,13 @@ import {
     Cascade,
     ManyToOne,
     Rel,
-    OneToOne
+    OneToOne,
+    OneToMany
 } from '@mikro-orm/core'
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {tipoUsuario} from '../tipoUsuario/tipoUsuario.entity.js'
 import {Dj} from '../dj/dj.entity.js'
+import { OpinionDj } from '../opinionDj/opinionDj.entity.js'
 
 @Entity()
 export class Usuario extends BaseEntity {
@@ -32,4 +34,9 @@ export class Usuario extends BaseEntity {
     
     @OneToOne(() => Dj, { nullable: true, cascade: [Cascade.ALL], orphanRemoval: true,}) 
     dj!: Dj;
+
+    @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.usuario, {
+        cascade: [Cascade.ALL],
+    })
+    opinionDjs = new Array<OpinionDj>();
 }
