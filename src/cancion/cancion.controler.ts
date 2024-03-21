@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { Cancion } from './cancion.entity.js'
-import { fail } from 'assert'
 
 const em = orm.em
 
@@ -98,7 +97,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id
-    const cancion = em.findOneOrFail(Cancion, id)
+    const cancion = await em.findOneOrFail(Cancion, id)
     await em.removeAndFlush(cancion)
     res.status(200).send({ message: 'Cancion eliminada exitosamente!' })
   } catch (error: any) {
