@@ -2,7 +2,7 @@ import {
     Entity,
     Property,
     ManyToOne,
-    Rel,
+    Rel
 } from '@mikro-orm/core'
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {Dj} from '../dj/dj.entity.js'

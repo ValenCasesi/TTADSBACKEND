@@ -5,7 +5,8 @@ import {
     ManyToOne,
     Rel,
     OneToOne,
-    OneToMany
+    OneToMany,
+    Collection
 } from '@mikro-orm/core'
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {tipoUsuario} from '../tipoUsuario/tipoUsuario.entity.js'
@@ -33,10 +34,10 @@ export class Usuario extends BaseEntity {
     tipoUsuario!: Rel<tipoUsuario>
     
     @OneToOne(() => Dj, { nullable: true, cascade: [Cascade.ALL], orphanRemoval: true,}) 
-    dj!: Dj;
+    dj!: Rel<Dj>;
 
-    @OneToMany(() => OpinionDj, (opinionDj) => opinionDj.usuario, {
+    @OneToMany(() => OpinionDj, opinionDj => opinionDj.usuario, {
         cascade: [Cascade.ALL],
     })
-    opinionDjs = new Array<OpinionDj>();
+    opinionDj = new Collection<OpinionDj>(this);
 }

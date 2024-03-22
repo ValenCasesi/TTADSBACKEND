@@ -39,6 +39,6 @@ export class Dj extends BaseEntity {
   })
   cancionDj = new Collection<CancionDj>(this);
 
-  // @OneToOne(() => Usuario, { nullable: true }) 
-  //   usuario!: Usuario;
+  @OneToOne(() => Usuario, { nullable: true }) 
+  usuario!: Rel<Usuario>;
 }
