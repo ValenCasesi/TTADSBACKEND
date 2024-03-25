@@ -8,6 +8,7 @@ import { djMethods } from '../dj/dj.controler.js'
 import { CancionDj } from './cancionDj.entity.js'
 import { usuarioMethods } from '../usuario/usuario.controler.js'
 import { Usuario } from '../usuario/usuario.entity.js'
+import { DateTime } from "luxon";
 
 const em = orm.em
 
@@ -164,8 +165,9 @@ async function findDjPuntual(req:Request,res: Response){
     if (!dj) {
       return res.status(404).json({ message: 'Dj no encontrado' });
     }
-    const cancionDjs = await em.find(CancionDj, { dj }, {populate: ['cancion'],});
-    res.status(200).json({ message: 'Se encontraron todas las CancionDj del Dj', data: cancionDjs });
+    const fechaHoy = DateTime.now().setZone('UTC-3').toString().split('T')[0];
+    const cancionDjs = await em.find(CancionDj, { dj, fechaActual: fechaHoy }, {populate: ['cancion'],});
+    res.status(200).json({ message: 'Se encontraron todas las CancionDj de hoy del Dj', data: cancionDjs });
   }catch(error:any){
     res.status(500).json({ message: error.message });
   }
