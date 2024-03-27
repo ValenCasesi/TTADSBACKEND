@@ -3,6 +3,7 @@ import { orm } from '../shared/db/orm.js'
 import { OpinionDj } from './opinionDj.entity.js'
 import { t } from '@mikro-orm/core'
 import { Dj } from '../dj/dj.entity.js'
+import { Usuario } from '../usuario/usuario.entity.js'
 
 const em = orm.em
 
@@ -11,7 +12,7 @@ async function findAll(req: Request, res: Response) {
     const opinionDjs = await em.find(OpinionDj, {})
     res
       .status(200)
-      .json({ message: 'found all opinionDjs', data: opinionDjs })
+      .json({ message: 'Se encontraron todas las opiniones del dj:', data: opinionDjs })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -23,7 +24,7 @@ async function findOne(req: Request, res: Response) {
     const opiniondj = await em.findOneOrFail(OpinionDj, { id })
     res
       .status(200)
-      .json({ message: 'found OpinionDj', data: opiniondj })
+      .json({ message: 'Se encontro una opinion del dj:', data: opiniondj })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -38,9 +39,9 @@ async function findOpinionByDj(req: Request, res: Response) {
       return res.status(404).json({ message: "Dj no encontrado" });
     }
 
-    const opiniondjs = await em.find(OpinionDj, { dj: djEncontrado });
+    const opiniondjs = await em.find(OpinionDj, { dj: djEncontrado }, { populate: ['usuario'] });
 
-    res.status(200).json({ message: 'OpinionDjs encontrada', data: opiniondjs });
+    res.status(200).json({ message: 'Opiniones del dj encontradas', data: opiniondjs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -53,9 +54,14 @@ async function add(req: Request, res: Response) {
     if (!actualDj) {
       return res.status(404).json({ message: 'No existe un DJ actual' });
     }
+    const usuario = await em.findOne(Usuario, { uid: req.body.uid });
+    if (!usuario) {
+      return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
+    }
 
     const opiniondj = em.create(OpinionDj, req.body);
     opiniondj.dj = actualDj;
+    opiniondj.usuario = usuario;
     await em.flush();
 
     res.status(201).json({ message: 'Se ha registrado la opinion del Dj exitosamente!', data: opiniondj });
