@@ -16,7 +16,7 @@ async function findOneByDjCancion(cancion:Cancion | undefined , dj:Dj , res: Res
     try {
       const cancionDj = await em.findOne(CancionDj, { cancion , dj , actual:true})
       if(cancionDj){
-        return res.status(200).json({ message: 'cancionDj ya existente', data: cancionDj })
+        return res.status(200).json({ message: 'La cancion ya existía', data: cancionDj })
       }
     } catch (error: any) {
       res.status(500).json({ message: error.message })
@@ -32,6 +32,9 @@ async function add(req: Request, res: Response) {
             return res.status(404).json({ message: 'No hay un Dj Actual' });
         }
         const cancionDjExistente = await findOneByDjCancion(cancionExistente, actualDj, res );
+        if (res.statusCode === 200) {
+            return res;
+        }
         if (!cancionDjExistente) {
             const cancionDj = new CancionDj();
             cancionDj.dj= actualDj;
@@ -40,10 +43,9 @@ async function add(req: Request, res: Response) {
             console.log(actualDj.fechaActual)
             cancionDj.fechaActual = actualDj.fechaActual;
             cancionDj.puntaje = 0;
-
             await em.persistAndFlush(cancionDj);
-            return res.status(201).json({ message: 'CancionDj agregadas exitosamente!', data: cancionDj });
-        } 
+            return res.status(201).json({ message: 'Cancion agregada exitosamente', data: cancionDj });
+        }
       }
   } catch (error: any) {
       res.status(500).json({ message: error.message });
