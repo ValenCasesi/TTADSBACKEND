@@ -18,7 +18,7 @@ async function login(req: Request, res: Response) {
         const mail = req.body.mail;
         const dj = await em.findOne(Usuario, {mail: mail})
         if (!dj){
-          const newUsuario = await em.create(Usuario, req.body)
+          const newUsuario = em.create(Usuario, req.body)
           newUsuario.logueado = true;
           const tipoCliente = await em.findOneOrFail(tipoUsuario, { rol: "Cliente" });
           newUsuario.tipoUsuario = tipoCliente;
@@ -27,7 +27,7 @@ async function login(req: Request, res: Response) {
             id: newUsuario._id,
             nombre: newUsuario.nombre,
             mail: newUsuario.mail,
-            tipoU: newUsuario.tipoUsuario
+            tipoU: newUsuario.tipoUsuario.rol
           }
           const token = jwt.sign(tokenPayload,'v4asd')
           //res.cookie("jwt",token)
@@ -37,7 +37,7 @@ async function login(req: Request, res: Response) {
             uid: newUsuario.uid,
             nombre: newUsuario.nombre,
             mail: newUsuario.mail,
-            tipo: getTipoUsuarioTexto(newUsuario.tipoUsuario)
+            tipo: newUsuario.tipoUsuario.rol
           }
           res.status(201).json({ message: "Usuario creado exitosamente!", data: data });
         }else{
