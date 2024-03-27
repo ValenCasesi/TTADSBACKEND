@@ -226,6 +226,23 @@ async function resetVotacion(req: Request) {
   }
 }
 
+async function habilitadoVotar(req: Request, res: Response) {
+  try {
+    const uid = req.params.uid;
+    const usuario = await em.findOne(Usuario, {uid: uid})
+    if (!usuario) {
+      return res.status(404).json({ message: 'No se ha encontrado el usuario.' });
+    }
+    if (usuario.votoRealizado){
+      return res.status(200).json({ message: 'Ya voto', habilitado: false });
+    }else{
+      return res.status(200).json({ message: 'No voto', habilitado: true });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const usuarioMethods = {
   login,
   logout,
@@ -235,4 +252,5 @@ export const usuarioMethods = {
   verificarDjActual,
   yaVoto,
   resetVotacion,
+  habilitadoVotar,
 };
