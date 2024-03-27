@@ -1,6 +1,5 @@
 import { Request, Response, response } from 'express'
 import { orm } from '../shared/db/orm.js'
-import { t } from '@mikro-orm/core'
 import { Dj } from '../dj/dj.entity.js'
 import { Cancion } from '../cancion/cancion.entity.js'
 import { cancionMethods } from '../cancion/cancion.controler.js'
@@ -9,17 +8,18 @@ import { CancionDj } from './cancionDj.entity.js'
 import { usuarioMethods } from '../usuario/usuario.controler.js'
 import { Usuario } from '../usuario/usuario.entity.js'
 import { DateTime } from "luxon";
+import { CONNREFUSED } from 'dns'
+import { fail } from 'assert'
 
 const em = orm.em
 
-async function findOneByDjCancion(cancion:Cancion | undefined , dj:Dj , res: Response) {
+async function findOneByDjCancion(cancion:Cancion | undefined , dj:Dj) {
     try {
       const cancionDj = await em.findOne(CancionDj, { cancion , dj , actual:true})
-      if(cancionDj){
-        return res.status(200).json({ message: 'cancionDj ya existente', data: cancionDj })
-      }
+      if(cancionDj){ return true }
+      else{ return false }
     } catch (error: any) {
-      res.status(500).json({ message: error.message })
+      return fail
     }
 }
 
@@ -31,19 +31,19 @@ async function add(req: Request, res: Response) {
         if (!actualDj) {
             return res.status(404).json({ message: 'No hay un Dj Actual' });
         }
-        const cancionDjExistente = await findOneByDjCancion(cancionExistente, actualDj, res );
-        if (!cancionDjExistente) {
+        const cancionDjExistente = await findOneByDjCancion(cancionExistente, actualDj );
+        if (cancionDjExistente) {
+          return res.status(200).json({ message: 'La cancion ya existía', data: cancionDjExistente });
+        }else{
             const cancionDj = new CancionDj();
             cancionDj.dj= actualDj;
             cancionDj.cancion = cancionExistente;
             cancionDj.actual = true;
-            console.log(actualDj.fechaActual)
             cancionDj.fechaActual = actualDj.fechaActual;
             cancionDj.puntaje = 0;
-
             await em.persistAndFlush(cancionDj);
-            return res.status(201).json({ message: 'CancionDj agregadas exitosamente!', data: cancionDj });
-        } 
+            return res.status(201).json({ message: 'Cancion agregada exitosamente', data: cancionDj });
+        }
       }
   } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -183,7 +183,6 @@ async function update(req:Request,res: Response){
       const igualCancionModificada = await em.findOne(Cancion, { nombre: req.body.nombre, autor: req.body.autor, id: { $ne: cancion.id }}); // Busco si hay una cancion con el mismo nombre y autor que como quedaria modificada
       if( igualCancionModificada!=null){ // Aca si hay una cancion asi
         const igualCancionDJModificada = await em.findOne(CancionDj, { cancion: igualCancionModificada}); // Busco si hay una canciondj con el mismo nombre y autor que como quedaria modificada
-        console.log(igualCancionDJModificada)
         if (igualCancionDJModificada != null) { // Aca si hay una canciondj asi
           igualCancionDJModificada.puntaje = igualCancionDJModificada.puntaje + cancionDj.puntaje; // Sumo los puntajes
           await em.flush();

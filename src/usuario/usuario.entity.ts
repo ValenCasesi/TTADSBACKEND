@@ -27,7 +27,7 @@ export class Usuario extends BaseEntity {
     @Property({nullable: true})
     logueado!: boolean
     
-    @Property({nullable: true})
+    @Property({nullable: false, default: false})
     votoRealizado!: boolean
 
     @ManyToOne(() => tipoUsuario, { nullable: false })
