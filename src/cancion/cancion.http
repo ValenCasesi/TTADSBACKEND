@@ -46,3 +46,6 @@ Content-Type: application/json
 
 ### DELETE
 DELETE https://fiestaappapi.onrender.com/api/canciones/654c3386e80f858ccc88edda
+
+### DELETE
+DELETE http://localhost:3000/api/canciones/65fb9e387dddbee358209c02

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { orm } from '../shared/db/orm.js'
 import { Cancion } from './cancion.entity.js'
+import { CancionDj } from '../cancionDj/cancionDj.entity.js'
 
 const em = orm.em
 
@@ -97,14 +98,31 @@ async function update(req: Request, res: Response) {
   }
 }
 
+// async function remove(req: Request, res: Response) {
+//   try {
+//     const id = req.params.id
+//     const cancion = await em.findOneOrFail(Cancion, id)
+//     await em.removeAndFlush(cancion)
+//     res.status(200).send({ message: 'Cancion eliminada exitosamente!' })
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
+
 async function remove(req: Request, res: Response) {
   try {
-    const id = req.params.id
-    const cancion = await em.findOneOrFail(Cancion, id)
-    await em.removeAndFlush(cancion)
-    res.status(200).send({ message: 'Cancion eliminada exitosamente!' })
+    const id = req.params.id;
+    const cancion = await em.findOneOrFail(Cancion, id);
+
+    // Eliminar todas las instancias de CancionDj asociadas a la canción
+    await em.getRepository(CancionDj).nativeDelete({ cancion: cancion });
+
+    // Eliminar la canción
+    await em.removeAndFlush(cancion);
+
+    res.status(200).send({ message: 'Cancion eliminada exitosamente!' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
 
