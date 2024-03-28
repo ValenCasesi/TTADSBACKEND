@@ -10,7 +10,6 @@ import {
 import { BaseEntity } from '../shared/db/baseEntity.entity.js'
 import {Dj} from '../dj/dj.entity.js'
 import {Cancion} from '../cancion/cancion.entity.js'
-import { DateTime } from "luxon";
 
 @Entity()
 export class CancionDj extends BaseEntity {

@@ -6,10 +6,13 @@ const em = orm.em
 
 async function findAll(req: Request, res: Response) {
   try {
-    const canciones = await em.find(Cancion, {})
-    res
-      .status(200)
-      .json({ message: 'Se encontraron todas las Canciones', data: canciones })
+    // const canciones = await em.find(Cancion, {})
+    const canciones = await em.find(Cancion, {}, { populate:['cancionDj']} )
+    canciones.forEach(cancion => {
+      cancion.puntajeTotal = cancion.cancionDj.reduce((acc, cancionDj) => acc + (cancionDj.puntaje || 0), 0)
+    }) 
+    console.log(canciones)
+    res.status(200).json({ message: 'Se encontraron todas las Canciones', data: canciones })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }

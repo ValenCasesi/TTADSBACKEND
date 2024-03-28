@@ -16,6 +16,9 @@ export class Cancion extends BaseEntity {
     @Property({ nullable: false, unique: true })
     autor!: string
 
+    @Property({ nullable: true })
+    puntajeTotal!: number
+
     @OneToMany(() => CancionDj, (cancionDj) => cancionDj.cancion, {
         cascade: [Cascade.ALL],
         orphanRemoval: true,
