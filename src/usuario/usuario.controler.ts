@@ -52,27 +52,28 @@ async function login(req: Request, res: Response) {
           }
           const token = jwt.sign(tokenPayload,'v4asd')
           //res.cookie("jwt",token)
+          const tipo = await getTipoUsuarioTexto(dj.tipoUsuario)
           const data = {
             token: token,
             uid: dj.uid,
             nombre: dj.nombre,
             mail: dj.mail,
-            tipo: getTipoUsuarioTexto(dj.tipoUsuario)
+            tipo: tipo
           }
           res.status(201).json({ message: 'Data del Dj actualizada', data: data });
         } 
     }else{
       usuario.logueado = true;
+      const tipo = await getTipoUsuarioTexto(usuario.tipoUsuario)
       const tokenPayload = {
         id: usuario._id,
         nombre: usuario.nombre,
         mail: usuario.mail,
-        tipoU: getTipoUsuarioTexto(usuario.tipoUsuario)
+        tipoU: tipo
       }
       await em.flush();
       const token = jwt.sign(tokenPayload,'v4asd')
       //res.cookie("jwt",token)
-      const tipo = await getTipoUsuarioTexto(usuario.tipoUsuario)
       const data = {
         token: token,
         uid: usuario.uid,
