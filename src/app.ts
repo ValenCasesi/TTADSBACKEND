@@ -9,6 +9,8 @@ import { orm } from './shared/db/orm.js'
 import { RequestContext } from '@mikro-orm/core'
 import cors from 'cors'
 import createServer from './utils/server.js'
+import { Usuario } from './usuario/usuario.entity.js'
+import { tipoUsuario } from './tipoUsuario/tipoUsuario.entity.js'
 
 // const port = process.env.PORT 
 // const app = express()
@@ -31,6 +33,42 @@ import createServer from './utils/server.js'
 const app = createServer()
 //await syncSchema() //never in production
 
-app.listen(3000, () => {
-  console.log('Server runnning on port')
+app.listen(3000, async() => {
+  console.log('\x1b[32m%s\x1b[0m','\n Servidor corriendo en el puerto:','\x1b[34m' + '3000' + '\x1b[0m')
+
+
+  // Verifica si existen los tipoUsuario 'Cliente', 'Dj' y 'Admin' en la base de datos
+  const em = orm.em.fork();
+  const cliente = await em.findOne(tipoUsuario, { rol: 'Cliente' });
+  const dj = await em.findOne(tipoUsuario, { rol: 'Dj' });
+  const admin = await em.findOne(tipoUsuario, { rol: 'Admin' });
+
+  // Si no existen los tipoUsuario, créelos
+  if (!cliente) {
+    em.create(tipoUsuario, { rol: 'Cliente' });
+    await em.flush();
+    console.log('\x1b[34m' + '\nTipo de usuario Cliente creado' + '\x1b[0m');
+  }
+  if (!dj) {
+    em.create(tipoUsuario, { rol: 'Dj' });
+    await em.flush();
+    console.log('\x1b[34m' + '\nTipo de usuario Dj creado' + '\x1b[0m');
+  }
+  if (!admin) {
+    em.create(tipoUsuario, { rol: 'Admin' });
+    await em.flush();
+    console.log('\x1b[34m' + '\nTipo de usuario Admin creado' + '\x1b[0m');
+  }
+
+  // Verifica si el usuario 'admin' existe en la base de datos
+  const tipoAdmin = await em.findOne(tipoUsuario, { rol: 'Admin' });
+  const usuarioAdmin = await em.findOne(Usuario, { tipoUsuario: tipoAdmin });
+  // Si el usuario 'admin' no existe se crea
+  if (!usuarioAdmin && tipoAdmin) {
+    const nuevoAdmin = new Usuario();
+    nuevoAdmin.mail= 'juanicampora@gmail.com';
+    nuevoAdmin.tipoUsuario = tipoAdmin;
+    await em.persistAndFlush(nuevoAdmin);
+    console.log('\x1b[34m' + '\n Usuario admin creado' + '\x1b[0m');
+  }
 })
