@@ -64,9 +64,9 @@ app.listen(3000, async() => {
   const tipoAdmin = await em.findOne(tipoUsuario, { rol: 'Admin' });
   const usuarioAdmin = await em.findOne(Usuario, { tipoUsuario: tipoAdmin });
   // Si el usuario 'admin' no existe se crea
-  if (!usuarioAdmin && tipoAdmin) {
+  if (!usuarioAdmin && tipoAdmin && process.env.ADMIN_EMAIL) {
     const nuevoAdmin = new Usuario();
-    nuevoAdmin.mail= 'juanicampora@gmail.com';
+    nuevoAdmin.mail= process.env.ADMIN_EMAIL;
     nuevoAdmin.tipoUsuario = tipoAdmin;
     await em.persistAndFlush(nuevoAdmin);
     console.log('\x1b[34m' + '\n Usuario admin creado' + '\x1b[0m');
