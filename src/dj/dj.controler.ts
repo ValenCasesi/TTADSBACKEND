@@ -3,6 +3,7 @@ import { orm } from '../shared/db/orm.js'
 import { Dj } from './dj.entity.js'
 import { DateTime } from "luxon";
 import { Usuario } from '../usuario/usuario.entity.js';
+import { usuarioMethods } from '../usuario/usuario.controler.js';
 
 const em = orm.em
 
@@ -87,6 +88,10 @@ async function remove(req: Request, res: Response) {
   try {
     const id = req.params.id
     const dj = em.getReference(Dj, id)
+    const eliminar = await usuarioMethods.eliminarDj(dj)
+    if (!eliminar) {
+      return res.status(404).json({ message: 'Error eliminando el usuario del dj.' });
+    }
     await em.removeAndFlush(dj)
     res.status(200).send({ message: 'DJ eliminado correctamente' })
   } catch (error: any) {

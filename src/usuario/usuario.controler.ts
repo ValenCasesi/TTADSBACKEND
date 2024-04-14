@@ -244,6 +244,19 @@ async function habilitadoVotar(req: Request, res: Response) {
   }
 }
 
+async function eliminarDj(Dj: Dj) {
+  try {
+    const usuario = await em.findOne(Usuario, {dj: Dj});
+    if (!usuario) {
+      return false;
+    }
+    await em.removeAndFlush(usuario);
+    return true;
+  }catch (error: any) {
+    return false;
+  }
+}
+
 export const usuarioMethods = {
   login,
   logout,
@@ -254,4 +267,5 @@ export const usuarioMethods = {
   yaVoto,
   resetVotacion,
   habilitadoVotar,
+  eliminarDj
 };
