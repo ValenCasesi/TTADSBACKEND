@@ -105,11 +105,15 @@ async function sumarVoto(req: Request, res: Response) {
   }
 }
 
-async function findAllTopCanciones(req: Request,res:Response) {
+async function findAllTopCanciones(req: Request, res: Response) {
   try {
     const fechaElegida = req.params.fechaElegida.split('.').join('-');  
-    const cancionDjs = await em.find(CancionDj, { fechaActual: { $eq: fechaElegida } }, { populate: ['cancion'] });
-    res.status(200).json({ message: 'Se encontro el top canciones', data: cancionDjs });
+    let cancionDjs = await em.find(CancionDj, { fechaActual: { $eq: fechaElegida } }, { populate: ['cancion'] });
+
+    // Ordena las canciones de DJ por puntaje de mayor a menor
+    cancionDjs = cancionDjs.sort((a, b) => b.puntaje - a.puntaje);
+
+    res.status(200).json({ message: 'Se encontraron las mejores canciones', data: cancionDjs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

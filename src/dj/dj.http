@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### GET ONE
-GET https://fiestaappapi.onrender.com/api/djs/654443d6ac72c35a43ed17da
+GET https://fiestaappapi.onrender.com/api/djs/66184337220f869092e27e72
 
 
 ### PUT
@@ -86,6 +86,11 @@ GET http://localhost:3000/api/djs/65458887db3542c3e0703d34/opinion
 
 ### GET ONE
 GET http://localhost:3000/api/djs/654486d2b4a6caa365177ad2/opiniones
+
+
+### GET ONE
+GET http://localhost:3000/api/djs/66184337220f869092e27e72
+
 
 
 
